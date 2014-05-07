@@ -12,16 +12,20 @@ For this project we are going to implement a dummy "Internal Wiki" for a company
 #### Functionality Requirements
 
 ##### Login Screen
-A secure login screen will handle user authentication  
+A secure login screen will handle user authentication.  Login will have a "capctha" to ensure that the user is indeed human.  
 
 ##### Chat functionality  
-A secure chat will be implemented to enable users to comunicate with one another  
+A secure chat will be implemented to enable users to comunicate with one another.  
 
 ##### Wiki page  
-A simple page containing sensitive company information  
+A simple page containing sensitive company information.  
 
 ##### Multiple user permissions  
 There will be two types of users that will be able to access the application.  The difference will be that one user can only read information from the page and the other will be able to edit it.
 
 
 #### Security Requirements  
+
+
+#### Security Risks  
+Whenever a webpage or application is open to the internet there are a number of 
