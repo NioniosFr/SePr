@@ -59,3 +59,4 @@ https://wireframe.cc/nDSpzX
 
 ##### Wiki Page  
 https://wireframe.cc/x3Mkce  
+![wiki_frame](./wire_frames/wiki.png?raw=true)
