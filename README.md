@@ -5,9 +5,10 @@
 * Chen  ...  
 * Jan Eefting  
 * Tobias ...  
+* Dionysios Fryganas
 
 #### Description  
-For this project we are going to implement a dummy "Internal Wiki" for a company.  The purpose of this is to practice and present secure development methods and implementations.
+For this project we are going to implement a dummy "Internal Wiki" for a company.  The purpose of this is to practice and present secure development methods and implementations as well as to test the outcome by doing penetration testing.
 
 # --
 
@@ -52,6 +53,9 @@ Data Assests:
 
 #### Web Application Design
 
-##### Login  Page
+##### Login  Page  
+https://wireframe.cc/nDSpzX  
+![Login_frame](./wire_frames/login.png?raw=true)
 
-##### Wiki Page
+##### Wiki Page  
+https://wireframe.cc/x3Mkce  
