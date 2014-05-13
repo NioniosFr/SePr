@@ -26,16 +26,6 @@ A simple page containing sensitive company information.
 
 ### Security Requirements  
 
-
-##### Threats
-
-There might be a number of parties that will try to compromise our data or break our system for few reasons.
-
-* Competeing companies might want to access the data in the system in order to gain a insight into the data or for a competitive edge.  
-* Script kiddies might try to break into our system or break it without any paticular motive other than the disruption itself.
-* Hackers might try to gain access to data in order to sell it to competitors.  
-* Employees that have been let go or that hold a grudge against the company/organization might want to break the system or access the information to sell to competitors or a number of other motives.  
-
 #####Security Principles
 
 The system will have to be tollerant towards all the known type of attacks.
@@ -107,8 +97,16 @@ The content should always be available and we can only handle limited downtime.
 * We will use a "Captcha" to make sure that all the login attempts are human instead of a bot or something else.  
 
 ### Security risk assesment
+#### Threats
 
-Risk Scenario's
+There might be a number of parties that will try to compromise our data or break our system for few reasons.
+
+* Competeing companies might want to access the data in the system in order to gain a insight into the data or for a competitive edge.  
+* Script kiddies might try to break into our system or break it without any paticular motive other than the disruption itself.
+* Hackers might try to gain access to data in order to sell it to competitors.  
+* Employees that have been let go or that hold a grudge against the company/organization might want to break the system or access the information to sell to competitors or a number of other motives.  
+
+#### Risk Scenario's
 
 ##### System broken:
 
