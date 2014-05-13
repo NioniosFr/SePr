@@ -54,6 +54,12 @@ The interfaxce should be minimal and all input needs to be validated, (even the 
 
 Pages and request will have to be processed properly and all output should be escaped when send to the user.
 
+###### User Elevation
+
+This technique is a subset of the buffer overflow attacks. An attacker tries to grant itself provildeges through the system and access parts that it should not. These types of attacks will have to be handled in the design of the system, as users will be able only to follow a CRUD priviledges table.
+Any user not in the table will not be granted access to the system.
+
+
 ##### User roles and permissions
 
 Each user of the system needs and will have to have a role. Users that are not identified by a role will not be granted access. This design pronciple will ensure that any data requested from or send to the system will be validated against the permissions the user has.
