@@ -68,6 +68,17 @@ Data Assests:
 * Database Acounts
 * Coding structure
 
+###### CRUD
+
+|   |   Roles    |
+|----|----|----|
+|Anonymous| - (Loggin)|
+|User|  R |
+|Maintainer| RU|
+|Manager| CRU  |
+|Admin| CRUD |
+
+
 #### CIA  
 
 ##### Confidentiality  
