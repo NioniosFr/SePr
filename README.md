@@ -89,10 +89,6 @@ The content should always be available and we can only handle limited downtime.
 * The passwords will be encrypted to ensure that they will remian uncompromised even if the database is compromised.  
 * We will use a "Captcha" to make sure that all the login attempts are human instead of a bot or something else.  
 
-
-### Security Principles  
-
-
 ### Security Risks  
 
 # --
