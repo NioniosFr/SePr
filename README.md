@@ -24,9 +24,9 @@ A simple page containing sensitive company information.
 
 # --
 
-#### Security Requirements  
+### Security Requirements  
 
-##### Data Assets Security
+#### Data Assets Security
 
 Data Assests:
 
@@ -36,18 +36,18 @@ Data Assests:
 * Database Acounts
 * Coding structure
 
-##### CIA  
+#### CIA  
 
-###### Confidentiality  
+##### Confidentiality  
 All the information and data that our website contains should be treated as confidential and we have to make sure that it cannot be easily access by unwanted parties.  
 
-###### Integrity  
+##### Integrity  
 The information should always be accurate and consistent.  This is because the information might be crucial to the company or organization.  
 
-###### Availibility  
+##### Availibility  
 The content should always be available and we can only handle limited downtime.  
 
-##### Architectural Security  
+#### Architectural Security  
 
 * User access permissions are required to ensure that no employee has the ability to delete the tables or databases in the system.  
 * When the server or service fails, it is important not to expose any of the components without protection and failsafe mechanisms in place.  
@@ -57,9 +57,11 @@ The content should always be available and we can only handle limited downtime.
 * The passwords will be encrypted to ensure that they will remian uncompromised even if the database is compromised.  
 * We will use a "Captcha" to make sure that all the login attempts are human instead of a bot or something else.  
 
-# --
 
-#### Security Risks  
+### Security Principles  
+
+
+### Security Risks  
 
 # --
 
