@@ -26,7 +26,29 @@ A simple page containing sensitive company information.
 
 ### Security Requirements  
 
-#### Data Assets Security
+#####Security Principles
+
+The system will have to be tollerant towards all the known type of attacks.
+
+###### SQL Injection
+
+Uri's send from the user will have to be properly escaped and should always (at any level of authentication) be handled
+as untrusted.
+
+###### XSS, XSRF, XSSI
+
+The system needs to be thoroughly tested to ensure that no security holes are left on the design and implementation of the frontend site.
+The interfaxce should be minimal and all input needs to be validated, (even the checkboxes).
+
+###### Buffer Overflow
+
+Pages and request will have to be processed properly and all output should be escaped when send to the user.
+
+##### User roles and permissions
+
+Each user of the system needs and will have to have a role. Users that are not identified by a role will not be granted access. This design pronciple will ensure that any data requested from or send to the system will be validated against the permissions the user has.
+
+##### Data Assets Security
 
 Data Assests:
 
