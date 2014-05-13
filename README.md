@@ -17,10 +17,10 @@ For this project we are going to implement a dummy "Internal Wiki" for a company
 A secure login screen will handle user authentication.  Login will have a "capctha" to ensure that the user is indeed human.  
 
 ##### Chat functionality  
-A secure chat will be implemented to enable users to comunicate with one another.  
+A secure chat will be implemented to enable users to comunicate with one another. The chat is global available for everybody who is logged in into the system. 
 
 ##### Wiki page  
-A simple page containing sensitive company information.  
+A simple page containing sensitive company information. 
 
 # --
 
