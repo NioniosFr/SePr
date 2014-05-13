@@ -89,7 +89,39 @@ The content should always be available and we can only handle limited downtime.
 * The passwords will be encrypted to ensure that they will remian uncompromised even if the database is compromised.  
 * We will use a "Captcha" to make sure that all the login attempts are human instead of a bot or something else.  
 
-### Security Risks  
+### Security risk assesment
+
+Risk Scenario's
+
+##### System broken:
+
+If the system is broken by hackers/script-kiddies etc. this will cause downtime until the system is fully recovered and running again.
+
+Probability : low - assume it will occur 20 times a year
+Impact Scale : medium - Downtime will have a medium impact because it will have financial ramifications as it will cost developers time and possibly reduce income for a time.  
+
+##### Data Compromised:
+
+If our data is compromised it will have a varied impact depending on how the data has been compromised.
+
+Probability : Low - assume this will occur 5 times a year
+
+###### Data accessed
+
+Impact Scale : Medium - If the data is merely accesed and read then the impact is bad but not the worst.  In this case it can lead to finacial ramifications as well as a loss of reputation and eventually capital income.   
+
+###### Data changed
+
+Impact Scale : High - If the data is changed then the impact will be high as it will take a reletively large amount of time to find the change and correct it.  As with the other scenario's, this too will have financial ramifications as well a great potential for loss of reputation and capital income.
+
+###### Data removed
+
+Impact Scale : High - If the data is removed from the system it will have quite a big impact on the company.organization if the data is not securely backed up.  This will have large financial ramifications such as a loss of capital income and a loss of reputation.
+
+##### Access Compromised:
+
+Probability : Low - assume this happens 2x per year.
+Impact Scale : High - When access to the system is compromised it allows unwanted parties to observe and slowly sabbotage the comapny/organization by systematically disrupting information used to conduct operations within the company/organization.  This can have massive financial ramifications and can mean the end of the company.  it is therefore crucial to ensure that this is difficult to happen
 
 # --
 
