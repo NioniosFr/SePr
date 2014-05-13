@@ -26,38 +26,12 @@ A simple page containing sensitive company information.
 
 ### Security Requirements  
 
-#####Security Principles
 
-The system will have to be tollerant towards all the known type of attacks.
-
-###### SQL Injection
-
-Uri's send from the user will have to be properly escaped and should always (at any level of authentication) be handled
-as untrusted.
-
-###### XSS, XSRF, XSSI
-
-The system needs to be thoroughly tested to ensure that no security holes are left on the design and implementation of the frontend site.
-The interfaxce should be minimal and all input needs to be validated, (even the checkboxes).
-
-###### Buffer Overflow
-
-Pages and request will have to be processed properly and all output should be escaped when send to the user.
-
-###### User Elevation
-
-This technique is a subset of the buffer overflow attacks. An attacker tries to grant itself provildeges through the system and access parts that it should not. These types of attacks will have to be handled in the design of the system, as users will be able only to follow a CRUD priviledges table.
-Any user not in the table will not be granted access to the system.
-
+##### Data Assets Security
 
 ##### User roles and permissions
 
 Each user of the system needs and will have to have a role. Users that are not identified by a role will not be granted access. This design pronciple will ensure that any data requested from or send to the system will be validated against the permissions the user has.
-
-##### Data Assets Security
-
-Data Assests:
-
 
 * CRUD Permissions
 * Roles
@@ -66,7 +40,7 @@ Data Assests:
 
 ###### CRUD
 
-|   |   Roles    |
+| Users  |   Roles    |
 |----|----|----|
 |Anonymous| - (Loggin)|
 |User|  R |
@@ -105,6 +79,29 @@ There might be a number of parties that will try to compromise our data or break
 * Script kiddies might try to break into our system or break it without any paticular motive other than the disruption itself.
 * Hackers might try to gain access to data in order to sell it to competitors.  
 * Employees that have been let go or that hold a grudge against the company/organization might want to break the system or access the information to sell to competitors or a number of other motives.  
+
+
+#### Attacks
+The system will have to be tollerant towards all the known type of attacks.
+
+###### SQL Injection
+
+Uri's send from the user will have to be properly escaped and should always (at any level of authentication) be handled
+as untrusted.
+
+###### XSS, XSRF, XSSI
+
+The system needs to be thoroughly tested to ensure that no security holes are left on the design and implementation of the frontend site.
+The interfaxce should be minimal and all input needs to be validated, (even the checkboxes).
+
+###### Buffer Overflow
+
+Pages and request will have to be processed properly and all output should be escaped when send to the user.
+
+###### User Elevation
+
+This technique is a subset of the buffer overflow attacks. An attacker tries to grant itself provildeges through the system and access parts that it should not. These types of attacks will have to be handled in the design of the system, as users will be able only to follow a CRUD priviledges table.
+Any user not in the table will not be granted access to the system.
 
 #### Risk Scenario's
 
