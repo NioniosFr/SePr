@@ -1,7 +1,7 @@
 #Software Security Project
 
 #### Group Members
-* Fan  ...  
+* Fan  Wang  
 * Chen  ...  
 * Jan Eefting  
 * Tobias Zobrist 
