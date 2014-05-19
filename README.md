@@ -2,7 +2,7 @@
 
 #### Group Members
 * Fan  Wang  
-* Chen  ...  
+* Chen Wang  
 * Jan Eefting  
 * Tobias Zobrist 
 * Dionysios Fryganas
