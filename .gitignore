@@ -1,0 +1,8 @@
+# 3rd Party libraries
+/vendor/
+# Eclipse folders
+.buildpath
+.project
+.settings/**
+composer.json
+composer.lock
