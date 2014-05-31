@@ -1,16 +1,14 @@
 <?php
-define ( 'CW', 1 );
+define('CW', 1); // CW stands for : Corporate Wiki.
 
-define ( 'BASE', dirname ( __DIR__ ) . '/' );
-define ( 'LIB', BASE . 'libraries/' );
-define ( 'WEB', dirname ( __FILE__ ) );
-define ( 'TEMPLATES', BASE . 'templates/' );
-
-/* Include composers autoload. */
-include_once dirname ( dirname ( BASE ) ) . '/vendor/autoload.php';
+// Define static paths.
+define('BASE', dirname(__DIR__) . '/');
+define('ETC', BASE . 'etc/');
+define('CMN', BASE . 'common/');
+/* Include global functions */
+require_once CMN . 'functions.php';
 /* Include configuration files. */
-include_once BASE . 'bootstrap.php';
-include_once BASE . 'config.php';
+require_once CMN . 'bootstrap.php';
 
 /* Dispatch request */
 // TODO: Classes to dispatch the request
@@ -18,10 +16,12 @@ include_once BASE . 'config.php';
 // TODO: Classes to determine and define actions
 /* Execute request */
 // TODO: Classes to execute requests.
+
 /* Serve response */
-include_once TEMPLATES . 'header.php';
-include_once TEMPLATES . 'content.php';
-include_once TEMPLATES . 'footer.php';
+$layout = BASE . $config['PATHS']['layout'];
+include_once $layout . 'header.php';
+include_once $layout . 'content.php';
+include_once $layout . 'footer.php';
 
 // Generally speaking:
 // Find what was requested.

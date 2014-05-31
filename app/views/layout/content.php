@@ -1,4 +1,4 @@
 <div id="content">
-<h3>It Works!</h3>
-<p>Make sure to add some content!</p>
+<h3><?php /* echo $view->$pageHeader; */ ?>Fancy</h3>
+<p><?php /* call functions/hooks, or smthng */ ?></p>
 </div>
