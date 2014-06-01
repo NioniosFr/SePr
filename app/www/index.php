@@ -1,27 +1,22 @@
 <?php
 define('CW', 1); // CW stands for : Corporate Wiki.
-
 // Define static paths.
 define('BASE', dirname(__DIR__) . '/');
 define('ETC', BASE . 'etc/');
-define('CMN', BASE . 'common/');
-/* Include global functions */
-require_once CMN . 'functions.php';
-/* Include configuration files. */
-require_once CMN . 'bootstrap.php';
+// Define the global config variables.
+global $path, $www, $db, $view,$route, $error;
+/* Include global functions and classes. */
+require_once ETC . 'bootstrap.php';
 
 /* Dispatch request */
-// TODO: Classes to dispatch the request
+$route->determineRequest();
+$route->execute();
 /* Define actions */
 // TODO: Classes to determine and define actions
 /* Execute request */
 // TODO: Classes to execute requests.
-
-/* Serve response */
-$layout = BASE . $config['PATHS']['layout'];
-include_once $layout . 'header.php';
-include_once $layout . 'content.php';
-include_once $layout . 'footer.php';
+$view->render();
+exit();
 
 // Generally speaking:
 // Find what was requested.
