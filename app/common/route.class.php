@@ -2,7 +2,7 @@
 if (! defined('CW'))
     exit('invalid access');
 
-global $path,$view, $error;
+global $path, $view, $error;
 
 /**
  * Determines which request was asked by the user.
@@ -12,11 +12,17 @@ global $path,$view, $error;
  */
 class Route
 {
+
     var $uri;
+
     var $query;
+
     var $request;
+
     var $controller;
+
     var $action;
+
     var $arguments;
 
     function __construct()
@@ -40,39 +46,35 @@ class Route
      */
     function determineRequest()
     {
+        global $path, $error;
         $this->getAction();
-
-        switch ($this->action) {
-            case 'login':
-                require_once $path['common'] . 'login.php';
-                $this->action = new Login();
-                $this->view = $view->getLogin();
-                // include_once 'loginView';
-                break;
-            case 'save':
-                require_once "path['common']save.php";
-                $this->action = new Save();
-                // include_once 'saveView';
-                break;
-            case 'create':
-                break;
-            case 'delete':
-                break;
-            case 'logout':
-                require_once $path['common'] . 'logout.php';
-                $this->action = new Logout();
-                // include_once 'logoutView';
-                break;
-            default:
-                //$view->getDefault();
-                break;
+        if ($this->action === 'default') {
+            return;
         }
-    }
 
+        require_once $path['controllers'] . $this->action . '.php';
 
-    function execute()
-    {
-    }
+        $this->action = ucfirst($this->action);
+        $this->action = new $this->action();
+        if (! empty($this->arguments)) {
+            $func = $this->arguments[0];
+            unset($this->arguments[0]);
+            $this->arguments = array_values($this->arguments);
+
+            try {
+                if (method_exists($this->action, $func)) {
+                    $this->action->{$func}($this->arguments);
+                }
+            } catch (Exception $e) {
+                $error->setError('Undefined Method.');
+            }
+        } else {
+            $this->action->index();
+        }
+}
+
+function execute()
+{}
 
     /**
      * Gets the action from the route.
@@ -81,27 +83,29 @@ class Route
      */
     public function getAction()
     {
-        global $path;
+        global $path, $error;
+        $this->action = 'default';
 
-        if ( ! array_key_exists('path', $this->request))
-        {
+        if (! array_key_exists('path', $this->request)) {
             // Default controller and view.
-            $this->action = 'default';
             return;
         }
-        $controller = urldecode(urldecode(rawurldecode($this->request['path'])));
-        $controller = html_entity_decode($controller);
-        $parts = explode('/', $controller);
-        if (file_exists($path['controllers'].$parts[0])){
-                $this->action = $parts[0];
-                unset($parts[0]);
-                $this->arguments = $parts;
-        }else{
-            $this->action = 'default';
-        }
-    }
 
-    public function exitWithError($params)
-    {
+        $uri = urldecode(urldecode(rawurldecode($this->request['path'])));
+        $uri = htmlspecialchars(html_entity_decode($uri));
+        $uriParts = explode('/', $uri);
+
+        if (file_exists($path['controllers'] . $uriParts[0] . '.php')) {
+            $this->action = $uriParts[0];
+            unset($uriParts[0]);
+            if (empty($uriParts[1])) {
+                return;
+            } else {
+                // TODO: Sanitize that.
+                $this->arguments = array_values($uriParts);
+            }
+        } else {
+            $error->setError('Undefined action: ' . htmlentities($uriParts[0]));
+        }
     }
 }

@@ -7,34 +7,45 @@ if (! defined('CW'))
  *
  * Will be checked for errors on every step, if not error found
  */
-class Error{
-        var $errors;
-        var $errorMsg;
-    	var $errorNr;
-    	var $errorParrent;
-        var $hasErrors;
+class Error
+{
+
+    var $error;
+
+    var $hasErrors;
 
     function __construct()
     {
-        $this->errors = array();
-        $this->errorMsg = '';
-        $this->errorNr = '';
-        $this->errorParent = '';
+        $this->error = array();
         $this->hasErrors = false;
     }
 
     function __get($param)
     {
-        return ($param == 'hasErrors') ? count($errors) : $this->$param;
+        return $this->$param;
     }
 
-    function __set($array, $isArray=false)
+    public function printErrorMsg()
     {
-        if (!$isArray)
-            return ;
+        if ($this->hasErrors) {
+            echo '<div class="alert alert-danger">';
+            echo '<ol>';
+            foreach ($this->error as $err) {
+                echo '<li><b>'.$err['type']. ': '. $err['msg'] . '</b></li>';
+            }
+            echo '</ol>';
+            echo '</div>';
+        } else
+            echo '';
+    }
 
-        foreach ($array as $key => $value) {
-            $this->$key = $value;
-        }
+    public function setError($message, $errorType = '', $errorNr = -1)
+    {
+        array_push($this->error, array(
+            'type' => $errorType,
+            'msg' => $message,
+            'nr' => $errorNr
+        ));
+        $this->hasErrors = count($this->error);
     }
 }
