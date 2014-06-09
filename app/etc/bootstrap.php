@@ -32,7 +32,7 @@ $config['WWW']['scripts'] = $config['WWW']['web'] . '/' . $config['WWW']['script
 $config['WWW']['styles'] = $config['WWW']['web'] . '/' . $config['WWW']['styles'] . '/';
 
 // Define the global config variables.
-global $path, $www, $db, $view,$route, $error;
+global $path, $www, $db, $view, $route, $error;
 // Contains system paths to folders.
 $path = $config['PATH'];
 // Contains urls to folders.
@@ -42,8 +42,9 @@ $db = $config['DB'];
 
 // Require global classes.
 include_once $path['common'] . 'route.class.php';
-require_once $path['common'].'view.class.php';
-require_once $path['common'].'error.class.php';
+require_once $path['common'] . 'controller.class.php';
+require_once $path['common'] . 'view.class.php';
+require_once $path['common'] . 'error.class.php';
 // Holds the route class for dispatching requests.
 $route = new Route();
 // Holds the view class to render.
