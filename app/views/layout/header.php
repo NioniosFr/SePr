@@ -28,7 +28,7 @@
 				<ul class="nav navbar-nav">
 					<li <?php if ($this->activePage == 'Wiki')echo 'class="active"';?>> <a href="<?php echo $www['base']. 'wiki/'; ?>">Wiki</a></li>
 					<li
-						<?php if ($this->activePage == 'Login')echo 'class="active"';?>> <a href="<?php echo $www['base'].'login/'; ?>">Login</a></li>
+						<?php if ($this->activePage == 'Login')echo 'class="active"';?>> <a href="<?php echo $www['base'].'user/'; ?>">Login</a></li>
 					<li
 						<?php if ($this->activePage === '')echo 'class="active"';?>><a href="<?php echo $www['base'].'error/'; ?>">Error</a></li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle"

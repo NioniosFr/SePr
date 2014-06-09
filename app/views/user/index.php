@@ -5,7 +5,7 @@ if (! defined('CW'))
 ?>
 	<h2>Login Form</h2>
 	<form id="loginForm" accept-charset="utf-8" method="post"
-		role="form" action="<?php echo $www['base'].'login'; ?>">
+		role="form" action="<?php echo $www['base'].'user/login'; ?>">
 			<div class="input text">
 				<label class="control-label" for="user">User Name: </label> <input
 					id="user" type="text" name="user" value="" />
