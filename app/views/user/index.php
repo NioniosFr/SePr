@@ -9,7 +9,7 @@ if (! defined('CW'))
 			<div class="input text">
 				<label class="control-label" for="user">User Name: </label> <input
 					id="user" type="text" name="user" value="" />
-			</div
+			</div>
 		<div class="form-group">
 			<div class="input text">
 				<label class="control-label" for="pass">Password: </label> <input

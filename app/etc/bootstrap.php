@@ -32,25 +32,27 @@ $config['WWW']['scripts'] = $config['WWW']['web'] . '/' . $config['WWW']['script
 $config['WWW']['styles'] = $config['WWW']['web'] . '/' . $config['WWW']['styles'] . '/';
 
 // Define the global config variables.
-global $path, $www, $db, $view, $route, $error;
+global $path, $www, $db, $session, $view, $route, $error;
 // Contains system paths to folders.
 $path = $config['PATH'];
 // Contains urls to folders.
 $www = $config['WWW'];
-// Contains the credentials for accessing the DB.
-$db = $config['DB'];
 
 // Require global classes.
 include_once $path['common'] . 'route.class.php';
 require_once $path['common'] . 'controller.class.php';
 require_once $path['common'] . 'view.class.php';
 require_once $path['common'] . 'error.class.php';
+require_once $path['lib'] . 'dbHandler.class.php';
+require_once $path['lib'] . 'userSession.class.php';
 // Holds the route class for dispatching requests.
 $route = new Route();
 // Holds the view class to render.
 $view = new View();
 // Holds the errors that occur.
 $error = new Error();
-
+// Holds the database handler object.
+$db = new DbHandler($config['DB']);
+$session = new UserSession();
 // Free unnecessary resources.
 unset($folder, $composer, $request, $config);

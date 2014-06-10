@@ -111,13 +111,16 @@ class Route
         // Initialize the controller.
         $this->controller = new $this->controller($model, $view);
 
-        if ($this->method !== NULL) {
+        if ($this->method !== null) {
             try {
                 if (method_exists($this->controller, $this->method)) {
+                    $this->getArguments();
                     $this->controller->{$this->method}($this->arguments);
+                } else {
+                    $error->setError($this->method, 'Undefined Method');
                 }
             } catch (Exception $e) {
-                $error->setError('Undefined Method: ' . $this->method);
+                $error->setError('', 'Undefined Error', 150);
             }
         } else {
             // Execute the controllers index function.
@@ -125,8 +128,21 @@ class Route
         }
     }
 
-    function execute()
-    {}
+    /**
+     * Finalize the route after the controller has finished execution.
+     *
+     * Checks for sever errors, unauthorized attempts, etc
+     * and redirects to the error view to the default if any.
+     */
+    function finalCheck()
+    {
+        global $error, $session, $view;
+        if ($error->severeErrorOccured()) {
+            $view->setView('index', 'default');
+            session_destroy();
+            unset($session);
+        }
+    }
 
     /**
      * Gets the action from the route.
@@ -160,14 +176,12 @@ class Route
             } else {
                 // Set the rest of the uri parts to the arguments array.
                 // TODO: Sanitize the URI parts.
-                // Reset the indexes and set the arguments array.
-                $this->arguments = array_values($uriParts);
                 // Find out if there is a method requested.
-                $this->method = $this->getMethod();
+                $this->method = $this->getMethod(array_values($uriParts));
             }
         } else {
             // Path was requested but didn't much any controller.
-            $error->setError('Undefined action: ' . htmlentities($uriParts[0]));
+            $error->setError(htmlentities($uriParts[0]), 'Undefined action', 150);
         }
     }
 
@@ -177,19 +191,15 @@ class Route
      *
      * @return String | NULL : The method name if any. NULL otherwise.
      */
-    public function getMethod()
+    public function getMethod($args)
     {
         // Once the action was determined, the rest of the request
         // was stored as arguments.
-        if (empty($this->arguments) || empty($this->arguments[0])) {
-            return NULL;
+        if (empty($args) || empty($args[0])) {
+            return null;
         }
 
-        $func = $this->arguments[0];
-        unset($this->arguments[0]);
-        // Reset the indexes
-        $this->arguments = array_values($this->arguments);
-        return $func;
+        return $args[0];
     }
 
     /**
@@ -197,5 +207,13 @@ class Route
      * These should be form input requests etc.
      */
     public function getArguments()
-    {}
+    {
+        if (! isset($this->request['path'])) {
+            return $this->arguments = null;
+        } else {
+            $args = $this->request;
+            unset($args['path']);
+            return $this->arguments = $args;
+        }
+    }
 }
