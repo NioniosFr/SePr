@@ -23,8 +23,8 @@ styles="styles"
 ;The above empty values are calculated in the app.
 
 [DB]
-host="92.109.173.161"
-port="5055"
+host=""
+port=""
 name="sepr"
 username="sepr"
 password="7MBHnH6bEqqGm5y2"

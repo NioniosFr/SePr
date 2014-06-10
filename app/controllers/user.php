@@ -31,16 +31,24 @@ class UserController implements Controller
     public function login($args)
     {
         global $error;
-        var_dump($args);
-        if (empty($args[0]) || empty($args[1])) {
-            $error->setError('Missing Arguments: You need to specify a username and a password.');
+        if (empty($args['user']) || empty($args['pass'])) {
+            $error->setError('You need to specify a username and a password.', 'Missing Arguments');
             $this->view->setView('login');
+        } else {
+            $user = mysql_real_escape_string($args['user']);
+            $pass = mysql_real_escape_string($args['pass']);
+            if ($this->model->checkUserCredentials($user, $pass)) {
+                $this->view->setView('index', 'wiki');
+            } else {
+                $error->setError('The given credentials do not much.', 'Wrong Credentials');
+                $this->view->setView('index');
+            }
         }
     }
 
     public function logout()
     {
         global $view;
-        $this->view->setView('logout');
+        $this->view->setView('index', 'default');
     }
 }
