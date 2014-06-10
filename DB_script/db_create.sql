@@ -26,14 +26,14 @@ CREATE TABLE IF NOT EXISTS sepr.user_auth
   secure_answer Char(255) NOT NULL,
   PRIMARY KEY (email_address),
   UNIQUE email_address (email_address),
-  UNIQUE usera_name (user_name)
+  UNIQUE user_name (user_name)
 );
 
 -- create table otun ---one time use number----------------
 
 CREATE TABLE IF NOT EXISTS sepr.session_otun
 (
-  otun Int NOT NULL,
+  otun Integer NOT NULL,
   user_name Char(50) NOT NULL,
   PRIMARY KEY (otun),
   UNIQUE otun (otun)
