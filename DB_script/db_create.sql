@@ -137,6 +137,7 @@ INSERT INTO sepr.page (last_edited_by,created,title,text) VALUES
 
 -- TESTING ----------------------------------------------------------------------
 
-select * from sepr.user_auth where passw = sha2('admin',256);
+select * from sepr.user_auth where passw = sha2('password_testing',256);
 
 show triggers from sepr;
+
