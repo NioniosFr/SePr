@@ -46,7 +46,7 @@ DROP TRIGGER IF EXISTS sepr.tr_before_insert_auth;
 -- create trigger section -------------------------------------------------------
 
 delimiter |
-CREATE TRIGGER sepr.tr_before_insert_auth 
+CREATE TRIGGER sepr.tr_before_insert_auth
 BEFORE INSERT ON sepr.user_auth
 FOR EACH ROW BEGIN
 IF (NEW.email_address IS NOT NULL) THEN
@@ -69,11 +69,27 @@ delimiter;
 
 -- Realtionships ------------------------
 
-ALTER TABLE sepr.session_otun ADD 
-CONSTRAINT user_auth_user_name_fk 
-FOREIGN KEY (user_name) 
-REFERENCES sepr.user_auth (user_name) 
-ON DELETE NO ACTION 
+ALTER TABLE sepr.otun ADD
+CONSTRAINT user_otun_user_name_fk
+FOREIGN KEY (user_name)
+REFERENCES sepr.user_auth (user_name)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+;
+
+ALTER TABLE sepr.permissions ADD
+CONSTRAINT user_permissions_user_name_fk
+FOREIGN KEY (user_name)
+REFERENCES sepr.user_auth (user_name)
+ON DELETE NO ACTION
+ON UPDATE NO ACTION
+;
+
+ALTER TABLE sepr.page ADD
+CONSTRAINT page_created_by_user_name_fk
+FOREIGN KEY (last_edited_by)
+REFERENCES sepr.user_auth (user_name)
+ON DELETE NO ACTION
 ON UPDATE NO ACTION
 ;
 
