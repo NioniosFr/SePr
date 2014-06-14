@@ -44,7 +44,7 @@ class UserController implements Controller
                 $session->loggedIn = true;
                 $session->createOtun($session->user);
                 $session->sessionCookieSave();
-                $_SESSION['success'] = "You are now logged In.";
+                $session->success = "You are now logged In.";
             } else {
                 $error->setError('The given credentials do not much.', 'Wrong Credentials');
                 $this->view->setView('index');
@@ -59,7 +59,7 @@ class UserController implements Controller
             $session->logoutUser($session->user);
             $session->resetSession();
         }
-        $_SESSION['notice'] = 'You have been logged out.';
+        $session->notice = 'You have been logged out.';
         $this->view->setView('index', 'default');
     }
 }
