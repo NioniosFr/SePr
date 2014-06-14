@@ -15,7 +15,7 @@ class DbHandler
 
     private $db_password;
 
-    private $db_con;
+    public $db_con;
 
     function __construct($args)
     {
@@ -27,47 +27,110 @@ class DbHandler
         $this->db_con = null;
     }
 
-    private function open()
+    public function open()
     {
+        global $error;
         try {
-            $this->db_con = mysql_connect($this->db_host . ':' . $this->db_port, $this->db_username, $this->db_password);
+            if (empty($this->db_port)) {
+                $this->db_con = mysqli_connect($this->db_host, $this->db_username, $this->db_password, $this->db_name);
+            } else {
+                $this->db_con = mysqli_connect($this->db_host, $this->db_username, $this->db_password, $this->db_name, $this->db_port);
+            }
         } catch (Exception $e) {
+            $error->errorOccured(sprintf("%s", $e), 'DB Open connection error', 150);
+            return null;
+        }
+        if (mysqli_connect_errno($this->db_con)) {
+            $error->errorOccured(sprintf("%s", $e), 'DB Open connection error', 150);
             return null;
         }
     }
 
-    private function close()
+    public function close()
     {
+        global $error;
         try {
-            mysql_close($this->db_con);
+            mysqli_close($this->db_con); // or die("ERROR: " . mysql_errno() . " - " . mysql_error());
         } catch (Exception $e) {
+            $error->errorOccured(sprintf("%s", $e), 'DB Close connection error', 150);
+            return null;
+        }
+        if (mysqli_connect_errno($this->db_con)) {
+            $error->errorOccured(sprintf("%s", $e), 'DB Close connection error', 150);
             return null;
         }
     }
 
     public function select($query, $params)
     {
+        global $error;
         $this->open();
         try {
-            mysql_select_db($this->db_name, $this->db_con) or die("ERROR: " . mysql_errno() . " - " . mysql_error());
-            ;
+            $res = mysqli_query($this->db_con, $query);
+            $count = $res->num_rows;
+            if ($count <= 1 && $res->field_count > 0) {
+                unset($rows);
+                $rows = mysqli_fetch_assoc($res);
+            } else {
+                $rows = array();
+                while ($count > 0) {
+                    $rows[] = mysqli_fetch_assoc($res);
+                    $count --;
+                }
+            }
         } catch (Exception $e) {
+            $error->errorOccured(sprintf("%s", $e), 'DB select query error', 150);
             $this->close();
             return false;
         }
-        //$query = mysql_real_escape_string($query);
-        $result = mysql_query($query, $this->db_con) or die("ERROR: " . mysql_errno() . " - " . mysql_error() . ' - ' . var_dump($query));
-        $rows = mysql_fetch_array($result);
+        // $result = mysql_query($query, $this->db_con); //or die("ERROR: " . mysql_errno() . " - " . mysql_error() . ' - ' . var_dump($query));
+        // $rows = mysql_fetch_array($result);
         $this->close();
         return $rows;
     }
 
-    public function insert()
-    {}
+    public function insert($query)
+    {
+        global $error;
+        $this->open();
+        try {
+            $res = mysqli_query($this->db_con, $query);
+        } catch (Exception $e) {
+            $error->errorOccured(sprintf("%s", $e), 'DB update query error', 150);
+            $this->close();
+            return false;
+        }
+        $this->close();
+        return ($res == null) ? false : $res;
+    }
 
-    public function update()
-    {}
+    public function update($query)
+    {
+        global $error;
+        $this->open();
+        try {
+            $res = mysqli_query($this->db_con, $query);
+        } catch (Exception $e) {
+            $error->errorOccured(sprintf("%s", $e), 'DB update query error', 150);
+            $this->close();
+            return false;
+        }
+        $this->close();
+        return ($res == null) ? false : $res;
+    }
 
-    public function delete()
-    {}
+    public function delete($query)
+    {
+        global $error;
+        $this->open();
+        try {
+            $res = mysqli_query($this->db_con, $query);
+        } catch (Exception $e) {
+            $error->errorOccured(sprintf("%s", $e), 'DB delete query error', 150);
+            $this->close();
+            return false;
+        }
+        $this->close();
+        return ($res == null) ? false : $res;
+    }
 }
