@@ -58,7 +58,8 @@ CREATE TABLE IF NOT EXISTS sepr.page(
 `last_edited_by` char(50) NOT NULL,
 `created` datetime NOT NULL,
 `modified` TIMESTAMP NOT NULL DEFAULT now(),
-`text` text,
+`title` char(255) NOT NULL,
+`text` text NOT NULL,
 PRIMARY KEY (`page_id`)
 );
 
