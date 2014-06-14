@@ -3,14 +3,14 @@ if (! defined('CW'))
     exit('invalid access');
 
     /* Include composers autoload. */
-$composer = dirname(dirname(BASE)) . '/vendor/autoload.php';
+$composer = dirname(dirname(BASE)) . DS . 'vendor' . DS . 'autoload.php';
 if (file_exists($composer))
     include_once $composer;
 
     // Read config from the ini file.
 $config = parse_ini_file(ETC . 'config.ini.php', true);
 /* Include the global functions. */
-require_once BASE . $config['PATH']['common'] . '/' . 'functions.php';
+require_once BASE . $config['PATH']['common'] . DS . 'functions.php';
 // Add trailing slashes and BASE to the paths.
 $config['PATH'] = fix_config_paths($config['PATH']);
 // Get the file that was accessed from the server.

@@ -83,7 +83,7 @@ class View
     {
         global $path;
         $this->folder = empty($domain) ? $this->folder : $domain;
-        $this->file = $path['views'] . $this->folder . '/' . $viewName . '.php';
+        $this->file = $path['views'] . $this->folder . DS . $viewName . '.php';
         $this->view = $viewName;
         if (! $this->isSafe()) {
             $this->file = $this->defaultView;

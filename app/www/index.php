@@ -1,8 +1,11 @@
 <?php
 define('CW', 1); // CW stands for : Corporate Wiki.
-                 // Define static paths.
-define('BASE', dirname(__DIR__) . '/');
-define('ETC', BASE . 'etc/');
+if (! defined('DS')) {
+    define('DS', DIRECTORY_SEPARATOR);
+}
+// Define static paths.
+define('BASE', dirname(__DIR__) . DS);
+define('ETC', BASE . 'etc' . DS);
 // Define the global variables.
 global $path, $www, $db, $session, $view, $route, $error;
 /* Include global functions and classes. */

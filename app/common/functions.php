@@ -19,8 +19,8 @@ function fix_config_paths(Array $paths)
 {
     $new = array();
     foreach ($paths as $key => $value) {
-        if (strlen($value) > 0 && $value[count($value) - 1] != '/')
-            $new[$key] = BASE . $value . '/';
+        if (strlen($value) > 0 && $value[count($value) - 1] != DS)
+            $new[$key] = BASE . $value . DS;
         else
             $new[$key] = BASE . $value;
     }
