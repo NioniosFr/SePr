@@ -5,4 +5,5 @@ if (! defined('CW'))
 interface Controller
 {
     public function init($args);
+    public function index();
 }

@@ -30,15 +30,21 @@ class UserController implements Controller
      */
     public function login($args)
     {
-        global $error;
-        if (empty($args['user']) || empty($args['pass'])) {
+        global $error, $session;
+        if (empty($args['mail']) || empty($args['pass'])) {
             $error->setError('You need to specify a username and a password.', 'Missing Arguments');
-            $this->view->setView('login');
+            $this->view->setView('index');
         } else {
-            $user = mysql_real_escape_string($args['user']);
-            $pass = mysql_real_escape_string($args['pass']);
-            if ($this->model->checkUserCredentials($user, $pass)) {
-                $this->view->setView('index', 'wiki');
+            $mail = mysql_escape_string(sprintf("%s", $args['mail']));
+            $pass = mysql_escape_string(sprintf("%s", $args['pass']));
+            if ($this->model->checkUserCredentials($mail, $pass)) {
+                $this->view->setView('loggedIn');
+                $session->cookie['name'] = 'account';
+                $session->user = $this->model->getUserName($mail);
+                $session->loggedIn = true;
+                $session->createOtun($session->user);
+                $session->sessionCookieSave();
+                $_SESSION['success'] = "You are now logged In.";
             } else {
                 $error->setError('The given credentials do not much.', 'Wrong Credentials');
                 $this->view->setView('index');
@@ -48,7 +54,12 @@ class UserController implements Controller
 
     public function logout()
     {
-        global $view;
+        global $session;
+        if ($session->user) {
+            $session->logoutUser($session->user);
+            $session->resetSession();
+        }
+        $_SESSION['notice'] = 'You have been logged out.';
         $this->view->setView('index', 'default');
     }
 }
