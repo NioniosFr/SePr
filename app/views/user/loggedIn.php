@@ -4,5 +4,8 @@ if (! defined('CW'))
 ?>
 
 <h2>My account</h2>
-
-<p></p>
+<br />
+<h3>Account Details:</h3>
+<div></div>
+<h3>Pages I was the last editor of:</h3>
+<div></div>

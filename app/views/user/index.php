@@ -11,7 +11,7 @@ if (! defined('CW'))
 		action="<?php echo $www['base'].'user/login'; ?>">
 		<div class="input text row ">
 			<div class="col-md-5">
-				<label class="control-label" for="user">User Name: </label> <input
+				<label class="control-label" for="mail">User Name: </label> <input
 					id="mail" class="form-control" type="text" name="mail" value="" />
 			</div>
 		</div>
