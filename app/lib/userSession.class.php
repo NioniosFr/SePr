@@ -178,7 +178,7 @@ class userSession
             // Get the time difference of the last access to now.
             $timeDiff = time() - strtotime($valid['modified']);
             // Check the difference to be within the permitted limits.
-            if ($timeDiff < 1500) {
+            if ($timeDiff < time() - 1500) {
                 return $res['user_name'];
             } else {
                 $error->setError('Your session has expired.', 'Session timed out', 130);
