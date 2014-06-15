@@ -28,3 +28,6 @@ port=""
 name="sepr"
 username="sepr"
 password="7MBHnH6bEqqGm5y2"
+
+[GENERAL]
+debug=1;

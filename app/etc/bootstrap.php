@@ -2,18 +2,23 @@
 if (! defined('CW'))
     exit('invalid access');
 
-// Turn off all error reporting
-error_reporting(0);
-
-/* Include composers autoload. */
+    /* Include composers autoload. */
 $composer = dirname(dirname(BASE)) . DS . 'vendor' . DS . 'autoload.php';
 if (file_exists($composer))
     include_once $composer;
 
-// Read config from the ini file.
+    // Read config from the ini file.
 $config = parse_ini_file(ETC . 'config.ini.php', true);
 /* Include the global functions. */
 require_once BASE . $config['PATH']['common'] . DS . 'functions.php';
+
+// Set error reporting.
+if (isset($config['GENERAL']['debug']) && $config['GENERAL']['debug'] >= 1) {
+    error_reporting(E_ALL | ~ E_STRICT);
+} else {
+    error_reporting(0);
+}
+
 // Add trailing slashes and BASE to the paths.
 $config['PATH'] = fix_config_paths($config['PATH']);
 // Get the file that was accessed from the server.
