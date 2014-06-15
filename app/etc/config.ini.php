@@ -1,4 +1,4 @@
-;<?php if (! defined('CW')) { exit(); __halt_compiler(); }
+;<?php if (! defined('CW')) { exit(); }
 ; Contains the global configuration variables used in the app.
 
 [PATH]
