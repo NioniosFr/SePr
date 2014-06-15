@@ -53,9 +53,9 @@ class View
     function __construct()
     {
         global $path;
-        $this->view = 'default';
+        $this->view = 'index';
         $this->folder = 'default';
-        $this->file = $path['views'] . $this->folder . '/index.php';
+        $this->file = $path['views'] . $this->folder . DS . $this->view . '.php';
         $this->defaultView = $this->file;
         $this->params = array();
         $this->activePage = 'index';
