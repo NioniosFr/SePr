@@ -273,7 +273,7 @@ class userSession
     function logout($otun)
     {
         global $db;
-        $otun = mysql_escape_string($otun);
+        $otun = db_escape_string($otun);
         $db->delete(sprintf("DELETE FROM `otun` WHERE `otun`= '%s';", $otun));
         $this->loggedIn = false;
         $this->name = 'Guest';
@@ -288,7 +288,7 @@ class userSession
     function logoutUser($userName)
     {
         global $db;
-        $userName = mysql_escape_string($userName);
+        $userName = db_escape_string($userName);
         $db->delete(sprintf("DELETE FROM `otun` WHERE `user_name`= '%s';", $userName));
         $this->loggedIn = false;
         $this->name = 'Guest';
@@ -304,7 +304,7 @@ class userSession
     function getUserPermissions($user)
     {
         global $db;
-        $res = $db->select(sprintf("SELECT * FROM `permissions` WHERE `user_name` = '%s'", mysql_escape_string($user)));
+        $res = $db->select(sprintf("SELECT * FROM `permissions` WHERE `user_name` = '%s';", db_escape_string($user)));
         if ($res == null || count($res) <= 0) {
             return null;
         } else {

@@ -61,12 +61,12 @@
 					<div class="row">
 					<?php if (isset($_SESSION['SUCCESS'])):?>
                     <div class="alert alert-success">
-							<p><?php echo $_SESSION['SUCCESS'];?></p>
+							<p><?php echo htmlspecialchars($_SESSION['SUCCESS']);?></p>
 						</div>
                 <?php endif;?>
                 <?php if (isset($_SESSION['NOTICE'])):?>
                     <div class="alert alert-info">
-							<p><?php echo $_SESSION['NOTICE'];?></p>
+							<p><?php echo htmlspecialchars($_SESSION['NOTICE']);?></p>
 						</div>
                 <?php endif;?>
 						<div><?php echo $error->printErrorMsg(); ?></div>

@@ -64,3 +64,19 @@ function sanitizeTypeFromRequest($key, $type = 'STRING')
 
     return $returnable;
 }
+
+/**
+ * Escapes a string for safe use in an sql command.
+ * Converts html entities back to characters,
+ * escapes slashes and semicolons.
+ *
+ * @param string $string
+ * @return string a hopefully escaped string.
+ */
+function db_escape_string($string)
+{
+    $string = htmlspecialchars_decode($string);
+    $string = preg_replace("/'/", "\'", $string);
+    $string = preg_replace("/;/", "\;", $string);
+    return $string;
+}

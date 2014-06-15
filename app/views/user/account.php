@@ -7,10 +7,10 @@ if (! defined('CW'))
 <h3>Account Details:</h3>
 <div>
 	<p>
-		<strong class="text-info">User Name: </strong><span><?php echo $this->params['user']['name'];?></span>
+		<strong class="text-info">User Name: </strong><span><?php echo htmlspecialchars($this->params['user']['name']);?></span>
 	</p>
 	<p>
-		<strong class="text-info">User EMail: </strong><span><?php echo $this->params['user']['mail'];?></span>
+		<strong class="text-info">User EMail: </strong><span><?php echo htmlspecialchars($this->params['user']['mail']);?></span>
 	</p>
 </div>
 <br />
@@ -39,7 +39,7 @@ if (count($this->params['edits']) <= 0) {
         echo "<td>{$page['page_id']}</td>";
         echo "<td>{$page['created']}</td>";
         echo "<td>{$page['modified']}</td>";
-        echo "<td>{$page['title']}</td>";
+        echo "<td>" . htmlentities($page['title']) . "</td>";
         echo "<td><a href='{$www['base']}wiki/view/?id={$page['page_id']}'>View</a>,&nbsp;<a href='{$www['base']}wiki/edit/?id={$page['page_id']}'>Edit</a></td>";
         echo "<tr>";
     } else {
@@ -49,7 +49,7 @@ if (count($this->params['edits']) <= 0) {
             echo "<td>{$page['page_id']}</td>";
             echo "<td>{$page['created']}</td>";
             echo "<td>{$page['modified']}</td>";
-            echo "<td>{$page['title']}</td>";
+            echo "<td>" . htmlentities($page['title']) . "</td>";
             echo "<td><a href='{$www['base']}wiki/view/?id={$page['page_id']}'>View</a>,&nbsp;<a href='{$www['base']}wiki/edit/?id={$page['page_id']}'>Edit</a></td>";
             echo "<tr>";
         }
