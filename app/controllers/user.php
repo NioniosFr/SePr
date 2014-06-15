@@ -39,14 +39,14 @@ class UserController implements Controller
      */
     public function login($args)
     {
-        global $error, $session;
+        global $session;
         $error = get_error_object();
         if (empty($args['mail']) || empty($args['pass'])) {
             $error->setError('You need to specify a username and a password.', 'Missing Arguments');
             $this->view->setView('index');
         } else {
-            $mail = mysql_escape_string(sprintf("%s", $args['mail']));
-            $pass = mysql_escape_string(sprintf("%s", $args['pass']));
+            $mail = db_escape_string(sprintf("%s", $args['mail']));
+            $pass = db_escape_string(sprintf("%s", $args['pass']));
             if ($this->model->checkUserCredentials($mail, $pass)) {
                 $session->cookie['name'] = 'account';
                 $session->user = $this->model->getUserName($mail);
@@ -85,9 +85,9 @@ class UserController implements Controller
      */
     public function myAccount()
     {
-        global $session, $error;
+        global $session;
         if (! $session->loggedIn || ! $session->user) {
-            $error->setError('You need to login to view this content.', 'Permission Denied');
+            Error::setError('You need to login to view this content.', 'Permission Denied');
         }
 
         $this->view->activePage = 'account';

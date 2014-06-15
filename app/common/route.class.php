@@ -89,7 +89,7 @@ class Route
      */
     function determineRequest()
     {
-        global $path, $view, $error;
+        global $path, $view;
 
         // Get the requested action (the controllers' name).
         $this->getAction();
@@ -117,10 +117,10 @@ class Route
                     $this->getArguments();
                     $this->controller->{$this->method}($this->arguments);
                 } else {
-                    $error->setError($this->method, 'Undefined Method');
+                    Error::setError($this->method, 'Undefined Method');
                 }
             } catch (Exception $e) {
-                $error->setError('', 'Undefined Error', 150);
+                Error::setError('', 'Undefined Error', 150);
             }
         } else {
             // Execute the controllers index function.
@@ -136,8 +136,8 @@ class Route
      */
     function finalCheck()
     {
-        global $error, $session, $view;
-        if ($error->severeErrorOccured()) {
+        global $session, $view;
+        if (Error::severeErrorOccured()) {
             $view->setView('index', 'default');
             $view->activePage = 'index';
             $session->resetSession();
@@ -151,7 +151,7 @@ class Route
      */
     public function getAction()
     {
-        global $path, $error;
+        global $path;
         $this->action = 'default';
 
         // Get the path request (defined from .htaccess).
@@ -181,7 +181,7 @@ class Route
             }
         } else {
             // Path was requested but didn't much any controller.
-            $error->setError(htmlentities($uriParts[0]), 'Undefined action', 150);
+            Error::setError(htmlentities($uriParts[0]), 'Undefined action', 150);
         }
     }
 

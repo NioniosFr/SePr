@@ -168,7 +168,7 @@ class userSession
      */
     function dbOtunMatchesUser()
     {
-        global $db, $error;
+        global $db;
         $res = $db->select(sprintf("SELECT `user_name` FROM `otun` WHERE `otun` = '%s';", $this->otun));
 
         // Check that a user with that otun exists.
@@ -181,7 +181,7 @@ class userSession
             if ($timeDiff < time() - 1500) {
                 return $res['user_name'];
             } else {
-                $error->setError('Your session has expired.', 'Session timed out', 130);
+                Error::setError('Your session has expired.', 'Session timed out', 130);
                 $this->logoutUser($res['user_name']);
                 return false;
             }

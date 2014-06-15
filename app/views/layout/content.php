@@ -1,4 +1,4 @@
-<?php global $www, $view, $error, $session; ?>
+<?php global $www, $view, $session; ?>
 <body role="document">
 	<!-- Fixed navbar -->
 	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -17,8 +17,8 @@
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
 					<li
-						class="dropdown <?php if ($this->activePage == 'wiki')echo ' class="active"';?>"><a
-						href="#" class="dropdown-toggle" data-toggle="dropdown">Wiki<b
+						class="dropdown"><a
+						href="#" class="dropdown-toggle <?php if ($this->activePage == 'wiki')echo ' active';?>" data-toggle="dropdown">Wiki<b
 							class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="<?php echo $www['base'].'wiki/'; ?>">Index</a></li>
@@ -69,7 +69,7 @@
 							<p><?php echo htmlspecialchars($_SESSION['NOTICE']);?></p>
 						</div>
                 <?php endif;?>
-						<div><?php echo $error->printErrorMsg(); ?></div>
+						<div><?php echo Error::printErrorMsg(); ?></div>
             <?php include_once $view->file; ?>
             </div>
 				</div>

@@ -7,7 +7,7 @@ if (! defined('DS')) {
 define('BASE', dirname(__DIR__) . DS);
 define('ETC', BASE . 'etc' . DS);
 // Define the global variables.
-global $path, $www, $db, $session, $view, $route, $error;
+global $path, $www, $db, $session, $view, $route;
 /* Include global functions and classes. */
 require_once ETC . 'bootstrap.php';
 
