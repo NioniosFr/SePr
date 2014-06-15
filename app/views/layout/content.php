@@ -41,7 +41,7 @@
 							class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="<?php echo $www['base'].'wiki/'; ?>">View All Pages</a></li>
-							<li><a href="<?php echo $www['base'].'wiki/addPage'; ?>">Add new
+							<li><a href="<?php echo $www['base'].'wiki/add'; ?>">Add new
 									Page</a></li>
 						</ul></li>
 				</ul>
