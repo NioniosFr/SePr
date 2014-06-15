@@ -10,19 +10,19 @@ if (! defined('CW'))
 class Error
 {
 
-    var $error;
+    static $error;
 
-    var $hasErrors;
+    static $hasErrors;
 
     function __construct()
     {
-        $this->error = array();
-        $this->hasErrors = false;
+        self::$error = array();
+        self::$hasErrors = false;
     }
 
     function __get($param)
     {
-        return $this->$param;
+        return isset($this->$param) ? $this->$param : null;
     }
 
     /**
@@ -30,12 +30,12 @@ class Error
      *
      * @return Echoes an html ordered list of errors.
      */
-    public function printErrorMsg()
+    static public function printErrorMsg()
     {
-        if ($this->hasErrors) {
+        if (self::$hasErrors) {
             echo '<div class="alert alert-danger">';
             echo '<ol>';
-            foreach ($this->error as $err) {
+            foreach (self::$error as $err) {
                 echo '<li><b>' . htmlspecialchars($err['type']) . ': ' . htmlspecialchars($err['msg']) . '</b></li>';
             }
             echo '</ol>';
@@ -56,12 +56,12 @@ class Error
      */
     public function setError($message, $errorType = '', $errorNr = -1)
     {
-        array_push($this->error, array(
+        array_push(self::$error, array(
             'type' => $errorType,
             'msg' => $message,
             'nr' => $errorNr
         ));
-        $this->hasErrors = count($this->error);
+        self::$hasErrors = count(self::$error);
     }
 
     /**
@@ -69,15 +69,31 @@ class Error
      *
      * @return boolean
      */
-    public function severeErrorOccured()
+    static public function severeErrorOccured()
     {
-        if ($this->hasErrors) {
-            foreach ($this->error as $error) {
+        if (self::$hasErrors) {
+            foreach (self::$error as $error) {
                 if ($error['nr'] > 100) {
                     return true;
                 }
             }
         }
         return false;
+    }
+}
+$error = new Error();
+
+/**
+ * Gets the error object.
+ *
+ * @return Error
+ */
+function get_error_object()
+{
+    if (isset($error)) {
+        return $error;
+    } else {
+        $error = new Error();
+        return $error;
     }
 }
