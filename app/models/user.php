@@ -39,9 +39,31 @@ class UserModel
         }
     }
 
+    function getUserEmail($userName)
+    {
+        global $db;
+        $res = $db->select(sprintf("SELECT `email_address` FROM `user_auth` WHERE `user_name` = '%s';", $userName));
+
+        if (isset($res)) {
+            return $res['email_address'];
+        } else {
+            return null;
+        }
+    }
+
     function logout($user)
     {
         global $db;
         $db->select(sprintf("DELETE FROM `otun` WHERE `user_name` = '%s';", mysql_escape_string($user)));
+    }
+
+    /**
+     * Queries the database and retrieves all the pages where last editor is the loggedIn user.
+     */
+    function getPagesEdited($userName)
+    {
+        global $db;
+        $res = $db->select(sprintf("SELECT * FROM `page` WHERE `last_edited_by` = '%s';", $userName));
+        return $res;
     }
 }

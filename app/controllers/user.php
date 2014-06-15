@@ -38,13 +38,13 @@ class UserController implements Controller
             $mail = mysql_escape_string(sprintf("%s", $args['mail']));
             $pass = mysql_escape_string(sprintf("%s", $args['pass']));
             if ($this->model->checkUserCredentials($mail, $pass)) {
-                $this->view->setView('loggedIn');
                 $session->cookie['name'] = 'account';
                 $session->user = $this->model->getUserName($mail);
                 $session->loggedIn = true;
                 $session->createOtun($session->user);
                 $session->sessionCookieSave();
                 $session->success = "You are now logged In.";
+                $this->myAccount();
             } else {
                 $error->setError('The given credentials do not much.', 'Wrong Credentials');
                 $this->view->setView('index');
@@ -61,5 +61,21 @@ class UserController implements Controller
         }
         $session->notice = 'You have been logged out.';
         $this->view->setView('index', 'default');
+    }
+
+    public function myAccount()
+    {
+        global $session, $error;
+        if (! $session->loggedIn || ! $session->user) {
+            $error->setError('You need to login to access this page.', 'Access restriction');
+        }
+
+        $this->view->params['edits'] = $this->model->getPagesEdited($session->user);
+        $this->view->params['permissions'] = $session->getUserPermissions($session->user);
+        $this->view->params['user'] = array();
+        $this->view->params['user']['name'] = $session->user;
+        $this->view->params['user']['mail'] = $this->model->getUserEmail($session->user);
+
+        $this->view->setView('account');
     }
 }
