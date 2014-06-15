@@ -29,13 +29,15 @@ if (! defined('CW'))
 	<?php
 foreach ($this->params['pages'] as $page) {
     echo "<tr>";
-   // echo "<a href='{$www['base']}{$page['action']['view']}'>";
+    // echo "<a href='{$www['base']}{$page['action']['view']}'>";
     echo "<td class='active'>{$page['id']}</td>";
     echo "<td class='active'>{$page['title']}</td>";
-    echo "<td class='active'>{$page['content']}</td>";
+    echo '<td class="active">';
+    echo substr($page['content'], 0, 160);
+    echo (strlen($page['content']) > 160) ? '&nbsp;. . . </td>' : '</td>';
     echo "<td class='active'>{$page['lastEditor']}</td>";
     echo "<td class='active'><a href='{$www['base']}{$page['action']['view']}'>View</a>, <a href='{$www['base']}{$page['action']['edit']}'>Edit</a>, <a href='{$www['base']}{$page['action']['delete']}'>Delete</a></td>";
-   // echo "</a>";
+    // echo "</a>";
     echo "</tr>";
 }
 ?>
