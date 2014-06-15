@@ -42,33 +42,25 @@ function fix_config_paths(Array $paths)
  *            (Optional) a default value to return.
  * @return NULL string NUM DOUBLE
  */
-function sanitizeTypeFromRequest($key, $type = 'STRING', $default = '')
+function sanitizeTypeFromRequest($key, $type = 'STRING')
 {
-    if (! array_key_exists($key, $_REQUEST)) {
-        if (empty($defaul)) {
-            return null;
-        } else {
-            return $default;
-        }
-    }
-
     $returnable;
     switch ($type) {
         case 'INT':
-            if (is_numeric($_REQUEST[$key]))
-                $returnable = (1 * $_REQUEST[$key]);
+            if (is_numeric($key))
+                $returnable = (1 * $key);
             break;
         case 'DOUBLE':
-            if (is_numeric($_REQUEST[$key]))
-                $returnable = (1.0 * $_REQUEST[$key]);
+            if (is_numeric($key))
+                $returnable = (1.0 * $key);
             break;
         case 'MAIL':
         case 'DATE':
         case 'STRING':
         default:
-            $returnable = sprintf("%s", $_REQUEST[$key]);
+            $returnable = sprintf("%s", $key);
             break;
     }
 
-    return ($returnable === null && empty($default)) ? $returnable : $default;
+    return $returnable;
 }
