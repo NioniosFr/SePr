@@ -130,7 +130,38 @@ class WikiController implements Controller
     }
 
     function delete()
-    {}
+    {
+        global $session, $error;
+        if ($this->errored || ! $session->user || ! $session->userPermissions) {
+            if (! $this->errored) {
+                $error->setError('Undefined user', 'Permission Denied', 120);
+            }
+            return;
+        }
+        if (! $session->userPermissions['delete']) {
+            $error->setError('You do not have delete permissions.', 'Action Denied');
+            return;
+        }
+        $args = func_get_args();
+
+        if (empty($args[0]['id']) || ! is_numeric($args[0]['id'])) {
+            $error->setError('You need to specify a page first.', 'Missing arguments');
+            $this->view->setView('index', 'wiki');
+        } else {
+            $id = sanitizeTypeFromRequest($args[0]['id'], 'INT');
+            $page = $this->model->getPageById($id);
+            if ($page) {
+                if ($this->model->deletePage($id)) {
+                    $session->success = sprintf('The page with id: %d was <strong>deleted</strong> succesfully.', $id);
+                } else {
+                    $error->setError('The page could not be deleted.', 'Delete Failed');
+                }
+            } else {
+                $error->setError('There was no page found with the given ID', 'Malformed request');
+            }
+        }
+        $this->view->setView('index', 'wiki');
+    }
 
     function edit()
     {
@@ -208,8 +239,15 @@ class WikiController implements Controller
     {
         $page['action'] = array();
         $id = $page['id'];
-        $page['action']['view'] = 'wiki/view/?id=' . $id;
-        $page['action']['edit'] = 'wiki/edit/?id=' . $id;
-        $page['action']['delete'] = 'wiki/delete/?id=' . $id;
+
+        $page['action']['view'] = 'wiki/view/?' . http_build_query(array(
+            'id' => $id
+        ));
+        $page['action']['edit'] = 'wiki/edit/?' . http_build_query(array(
+            'id' => $id
+        ));
+        $page['action']['delete'] = 'wiki/delete/?' . http_build_query(array(
+            'id' => $id
+        ));
     }
 }

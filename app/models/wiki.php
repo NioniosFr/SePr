@@ -118,4 +118,20 @@ class WikiModel
             return $this->getPage($res);
         }
     }
+
+    /**
+     * Deletes a page from the database with the given id.
+     *
+     * @param numeric $id
+     */
+    function deletePage($id)
+    {
+        global $db;
+        $res = $db->delete(sprintf("DELETE FROM `page` WHERE `page_id` = %d", $id));
+        if ($res == null) {
+            return false;
+        } else {
+            return $res;
+        }
+    }
 }
