@@ -61,7 +61,7 @@ class DbHandler
         }
     }
 
-    public function select($query, $params)
+    public function select($query)
     {
         global $error;
         $this->open();
