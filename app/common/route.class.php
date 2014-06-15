@@ -139,6 +139,7 @@ class Route
         global $error, $session, $view;
         if ($error->severeErrorOccured()) {
             $view->setView('index', 'default');
+            $view->activePage = 'index';
             $session->resetSession();
         }
     }

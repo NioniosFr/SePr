@@ -58,7 +58,7 @@ class View
         $this->file = $path['views'] . $this->folder . '/index.php';
         $this->defaultView = $this->file;
         $this->params = array();
-        $this->avtivePage = 'Home';
+        $this->activePage = 'index';
     }
 
     function __get($param)

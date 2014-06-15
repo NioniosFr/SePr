@@ -8,6 +8,7 @@ class UserController implements Controller
     function __construct()
     {
         $this->init(func_get_args());
+        $this->view->activePage = 'login';
     }
 
     public function init($args)
@@ -60,6 +61,7 @@ class UserController implements Controller
             $session->resetSession();
         }
         $session->notice = 'You have been logged out.';
+        $this->view->activePage = 'logout';
         $this->view->setView('index', 'default');
     }
 
@@ -67,15 +69,15 @@ class UserController implements Controller
     {
         global $session, $error;
         if (! $session->loggedIn || ! $session->user) {
-            $error->setError('You need to login to access this page.', 'Access restriction');
+            $error->setError('You need to login to view this content.', 'Permission Denied');
         }
 
+        $this->view->activePage = 'account';
         $this->view->params['edits'] = $this->model->getPagesEdited($session->user);
         $this->view->params['permissions'] = $session->getUserPermissions($session->user);
         $this->view->params['user'] = array();
         $this->view->params['user']['name'] = $session->user;
         $this->view->params['user']['mail'] = $this->model->getUserEmail($session->user);
-
         $this->view->setView('account');
     }
 }

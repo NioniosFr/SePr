@@ -18,6 +18,7 @@ class WikiController implements Controller
             $this->errored = true;
         } else {
             $this->errored = false;
+            $this->view->activePage = 'wiki';
         }
     }
 

@@ -1,3 +1,8 @@
+
+<div style="clear: both;">
+	<br />
+	<br />
+</div>
 <div id="footer">
 	<link rel="stylesheet"
 		href="<?php echo $www['styles'].'bootstrap.css'; ?>" />

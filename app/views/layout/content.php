@@ -10,20 +10,29 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="<?php echo $www['base']; ?>">Corporate
-					Wiki</a>
+				<a
+					class="navbar-brand <?php if($this->activePage == 'index')echo 'active';?>"
+					href="<?php echo $www['base']; ?>">Corporate Wiki</a>
 			</div>
 			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li <?php if ($this->activePage == 'wiki')echo 'class="active"';?>>
-						<a href="<?php echo $www['base']. 'wiki/'; ?>">Wiki</a>
-					</li>
+					<li
+						class="dropdown <?php if ($this->activePage == 'wiki')echo ' class="active"';?>"><a
+						href="#" class="dropdown-toggle" data-toggle="dropdown">Wiki<b
+							class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li><a href="<?php echo $www['base'].'wiki/'; ?>">Index</a></li>
+							<li><a href="<?php echo $www['base'].'wiki/add'; ?>">Add new Page</a></li>
+						</ul></li>
+					<li
+						<?php if ($this->activePage == 'account')echo 'class="active"';?>><a
+						href="<?php echo $www['base'].'user/myAccount'; ?>">My Account</a></li>
 
 					<li
 						<?php
 
     if ($this->activePage == 'login' || $this->activePage == 'logout')
-        echo 'class="active"';
+        echo ' class="active"';
     ?>><?php
 
     if ($session->loggedIn) {
@@ -33,17 +42,6 @@
     }
     echo '</li>';
     ?>
-					<li
-						<?php if ($this->activePage === 'myAccount')echo 'class="active"';?>><a
-						href="<?php echo $www['base'].'user/myAccount'; ?>">My Account</a></li>
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown">Wiki<b
-							class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li><a href="<?php echo $www['base'].'wiki/'; ?>">View All Pages</a></li>
-							<li><a href="<?php echo $www['base'].'wiki/add'; ?>">Add new
-									Page</a></li>
-						</ul></li>
 				</ul>
 			</div>
 			<!--/.nav-collapse -->
