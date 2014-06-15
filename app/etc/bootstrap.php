@@ -2,7 +2,7 @@
 if (! defined('CW'))
     exit('invalid access');
 
-    // Turn off all error reporting
+// Turn off all error reporting
 error_reporting(0);
 
 /* Include composers autoload. */
