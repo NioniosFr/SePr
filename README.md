@@ -10,6 +10,9 @@
 #### Description  
 For this project we are going to implement a dummy "Internal Wiki" for a company.  The purpose of this is to practice and present secure development methods and implementations as well as to test the outcome by doing penetration testing.
 
+#### Site
+The site can be accessed on this url: http://i259602.iris.fhict.nl/sepr/
+
 # --
 
 #### Functionality Requirements  

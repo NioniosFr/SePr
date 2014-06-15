@@ -120,8 +120,8 @@ ON UPDATE NO ACTION
 -- populate section -------------------------------------------------------------
 
 INSERT INTO sepr.user_auth (email_address,user_name,passw, secure_question,secure_answer) VALUES
-('admin','administrator','admin','What are we doing?','testing');
-('anonymous','anonymous','anonymous','What are we doing?','testing');
+('admin','administrator','admin','What are we doing?','testing'),
+('anonymous','anonymous','anonymous','What are we doing?','testing'),
 ('user1@email.com','user1','user1','What are we doing?','testing'),
 ('user2@email.com','user2','user2','What are we doing?','testing');
 
@@ -131,13 +131,12 @@ INSERT INTO sepr.permissions (`user_name`,`create`, `read`, `update`, `delete`) 
 ('user1',0,1,1,0),
 ('user2',1,1,1,0);
 
-INSERT INTO sepr.page (last_edited_by,created,text) VALUES
-('user1',now(),'This is a demo page content.'),
-('user2',now(),'This is another page content demo.');
+INSERT INTO sepr.page (last_edited_by,created,title,text) VALUES
+('user1',now(),'Demo title 1','This is a demo page content.'),
+('user2',now(),'Demot title2','This is another page content demo.');
 
 -- TESTING ----------------------------------------------------------------------
 
-select * from sepr.user_auth where passw = sha2('password_testing',256);
+select * from sepr.user_auth where passw = sha2('admin',256);
 
 show triggers from sepr;
-
