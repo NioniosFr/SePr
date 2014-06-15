@@ -2,12 +2,15 @@
 if (! defined('CW'))
     exit('invalid access');
 
-    /* Include composers autoload. */
+    // Turn off all error reporting
+error_reporting(0);
+
+/* Include composers autoload. */
 $composer = dirname(dirname(BASE)) . DS . 'vendor' . DS . 'autoload.php';
 if (file_exists($composer))
     include_once $composer;
 
-    // Read config from the ini file.
+// Read config from the ini file.
 $config = parse_ini_file(ETC . 'config.ini.php', true);
 /* Include the global functions. */
 require_once BASE . $config['PATH']['common'] . DS . 'functions.php';
