@@ -53,20 +53,23 @@ class DbHandler
             Error::setError(sprintf("%s", $e), 'DB Close connection error', 150);
             return null;
         }
-        if (mysqli_connect_errno($this->db_con)) {
-            Error::setError(sprintf("%s", $e), 'DB Close connection error', 150);
-            return null;
-        }
     }
 
-    public function select($query)
+    public function select($query, $params = null)
     {
         $this->open();
+        if ($this->db_con == null) {
+            return - 1;
+        }
+
+        if ($params != null) {
+            $query = dvsprintf($query, $params, $this->db_con);
+        }
+
         try {
             $res = mysqli_query($this->db_con, $query);
             $count = ($res->num_rows) ? $res->num_rows : 0;
             if ($count <= 1 && $res->field_count > 0) {
-                unset($rows);
                 $rows = mysqli_fetch_assoc($res);
             } else {
                 $rows = array();

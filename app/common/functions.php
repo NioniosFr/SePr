@@ -80,3 +80,35 @@ function db_escape_string($string)
     $string = preg_replace("/;/", "\;", $string);
     return $string;
 }
+
+/**
+ * Used to escape quotes for use in SQL.
+ *
+ * Convenience function to single-quote a preformated string,
+ * before passing it from vsprintf.
+ * If a mysqli link is given it will also escape the string
+ * with mysqli_real_escape_string
+ *
+ * @param string $string
+ *            The string format
+ * @param array $data
+ *            The data to pass through vsprintf
+ * @param MySQLi $con
+ *            The mysqli link
+ * @return string
+ */
+function dvsprintf($string, $data, $con = null)
+{
+    if ($con != null) {
+        //for ($i = 0, $m = count($data); $i < $m; $i ++) {
+             foreach ($data as &$param){
+            if (is_string($param)) {
+                $param = mysqli_real_escape_string($con, $param);
+            }
+        }unset($param);
+    }
+
+    // Quote the strings.
+    $quoted = preg_replace('/\%s/', "'%s'", $string);
+    return vsprintf($quoted, $data);
+}
