@@ -2,6 +2,14 @@
 if (! defined('CW'))
     exit('invalid access');
 
+/**
+ * Controller used for the user interactions.
+ *
+ * The functions that are defined public are accessible to the user via the URI.
+ *
+ * @author nionios
+ *
+ */
 class UserController implements Controller
 {
 
@@ -32,6 +40,7 @@ class UserController implements Controller
     public function login($args)
     {
         global $error, $session;
+        $error = get_error_object();
         if (empty($args['mail']) || empty($args['pass'])) {
             $error->setError('You need to specify a username and a password.', 'Missing Arguments');
             $this->view->setView('index');
@@ -53,6 +62,10 @@ class UserController implements Controller
         }
     }
 
+    /**
+     * Logs the user out of the site and resets the session.
+     * Shows the default view afterwards with a log out message.
+     */
     public function logout()
     {
         global $session;
@@ -65,6 +78,11 @@ class UserController implements Controller
         $this->view->setView('index', 'default');
     }
 
+    /**
+     * Gathers all the information known for the logged in user
+     * and sets the view to 'account'.
+     * If no user is logged in, no information is collected.
+     */
     public function myAccount()
     {
         global $session, $error;
