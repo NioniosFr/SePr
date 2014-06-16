@@ -55,18 +55,31 @@ class DbHandler
         }
     }
 
-    public function select($query, $params = null)
+    /**
+     * Perform a select query to the DB.
+     *
+     * @param string $query
+     *            The select query to execute.
+     *            If $data are passed, the query string has to be in the sprintf
+     *            format, without quotes for the string values, these are added internally.
+     * @param array $data
+     *            [Recommended][Optional] The query parameters in order of apearence.
+     * @return array|NULL An assosiative array.
+     *         If single result is returned from DB: array(column=>value).
+     *         If multiple results are returned: array([0]=>array(column=>value),...)
+     *         On errors it returns null.
+     */
+    public function select($query, Array $data = null)
     {
         $this->open();
         if ($this->db_con == null) {
-            return - 1;
-        }
-
-        if ($params != null) {
-            $query = dvsprintf($query, $params, $this->db_con);
+            return null;
         }
 
         try {
+            if (isset($data[0])) {
+                $query = dbvsprintf($query, $data, $this->db_con);
+            }
             $res = mysqli_query($this->db_con, $query);
             $count = ($res->num_rows) ? $res->num_rows : 0;
             if ($count <= 1 && $res->field_count > 0) {
@@ -81,7 +94,7 @@ class DbHandler
         } catch (Exception $e) {
             Error::setError(sprintf("%s", $e), 'DB select query error', 150);
             $this->close();
-            return false;
+            return null;
         }
         $this->close();
         return $rows;
@@ -104,6 +117,13 @@ class DbHandler
         return ($res == null) ? false : $res;
     }
 
+    /**
+     * Perform an update command to the DB.
+     *
+     * @param string $query
+     *            The query to execute.
+     * @return boolean True in success, False if failed or errored.
+     */
     public function update($query)
     {
         $this->open();
@@ -118,6 +138,13 @@ class DbHandler
         return ($res == null) ? false : $res;
     }
 
+    /**
+     * Perform a delete query to the database.
+     *
+     * @param string $query
+     *            The query to execute.
+     * @return boolean True in success, False if failed or errored.
+     */
     public function delete($query)
     {
         $this->open();
@@ -125,6 +152,33 @@ class DbHandler
             $res = mysqli_query($this->db_con, $query);
         } catch (Exception $e) {
             Error::setError(sprintf("%s", $e), 'DB delete query error', 150);
+            $this->close();
+            return false;
+        }
+        $this->close();
+        return ($res == null) ? false : $res;
+    }
+
+    /**
+     * Perform an INSERT|UPDATE|DELETE command to the database.
+     *
+     * @param string $query
+     *            The query to execute. | If $params are passed, the query has to be in sprintf format.
+     *            For convenience it will quote the %20 for you. SO don't do ti yourself
+     * @param array $data
+     *            [Recommended][Optional] The parameters in order of appearence inside the query.
+     * @return boolean True in success, False if failed or errored.
+     */
+    public function execute($query, Array $data = null)
+    {
+        $this->open();
+        try {
+            if (isset($data[0])) {
+                $query = dbvsprintf($query, $data, $this->db_con);
+            }
+            $res = mysqli_query($this->db_con, $query);
+        } catch (Exception $e) {
+            Error::setError(sprintf("%s", $e), 'DB query failed.');
             $this->close();
             return false;
         }

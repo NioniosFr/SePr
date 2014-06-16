@@ -94,21 +94,24 @@ function db_escape_string($string)
  * @param array $data
  *            The data to pass through vsprintf
  * @param MySQLi $con
- *            The mysqli link
- * @return string
+ *            The mysqli link by reference It won't close here.
+ * @return string on success, null otherwise.
  */
-function dvsprintf($string, $data, $con = null)
+function dbvsprintf($string, Array $data, &$con = null)
 {
-    if ($con != null) {
-        //for ($i = 0, $m = count($data); $i < $m; $i ++) {
-             foreach ($data as &$param){
-            if (is_string($param)) {
-                $param = mysqli_real_escape_string($con, $param);
+    if ($data) {
+        if (isset($con)) {
+            foreach ($data as &$param) {
+                if (is_string($param)) {
+                    $param = mysqli_real_escape_string($con, $param);
+                }
             }
-        }unset($param);
-    }
+        }
+        unset($param);
 
-    // Quote the strings.
-    $quoted = preg_replace('/\%s/', "'%s'", $string);
-    return vsprintf($quoted, $data);
+        // Quote the strings.
+        $quoted = preg_replace('/\%s/', "'%s'", $string);
+        return vsprintf($quoted, $data);
+    }
+    return null;
 }
