@@ -144,7 +144,12 @@ class userSession
     {
         global $db;
         $this->cookie['otun'] = $this->otun = $_SESSION['OTUN'] = md5(sprintf("%s%s", time(), $_SESSION['ID']));
-        $db->insert(sprintf("INSERT INTO `otun`(`user_name`,`otun`,`created`)VALUES('%s','%s','%s')ON DUPLICATE KEY UPDATE `otun`='%s';", $user, $this->otun, date('Y-m-d H:i:s'), $this->otun));
+        $db->execute("INSERT INTO `otun`(`user_name`,`otun`,`created`) VALUES (%s,%s,%s) ON DUPLICATE KEY UPDATE `otun`=%s;", array(
+            $user,
+            $this->otun,
+            date('Y-m-d H:i:s'),
+            $this->otun
+        ));
     }
 
     /**
@@ -154,7 +159,11 @@ class userSession
     {
         global $db;
         $this->cookie['otun'] = $this->otun = $_SESSION['OTUN'] = md5(sprintf("%s%s", time(), $_SESSION['ID']));
-        return $db->update(sprintf("UPDATE `otun` SET `otun` = '%s', `modified`= '%s' WHERE `user_name`= '%s';", $this->otun, date('Y-m-d H:i:s'), $this->user));
+        return $db->execute("UPDATE `otun` SET `otun` = %s, `modified`= %s WHERE `user_name`= %s;", array(
+            $this->otun,
+            date('Y-m-d H:i:s'),
+            $this->user
+        ));
     }
 
     /**
@@ -169,12 +178,16 @@ class userSession
     function dbOtunMatchesUser()
     {
         global $db;
-        $res = $db->select(sprintf("SELECT `user_name` FROM `otun` WHERE `otun` = '%s';", $this->otun));
+        $res = $db->select("SELECT `user_name` FROM `otun` WHERE `otun` = %s;", array(
+            $this->otun
+        ));
 
         // Check that a user with that otun exists.
         if (isset($res['user_name'])) {
             // Get the last time the user accessed the website.
-            $valid = $db->select(sprintf("SELECT `modified` FROM `otun` WHERE `user_name` = '%s';", $res['user_name']));
+            $valid = $db->select("SELECT `modified` FROM `otun` WHERE `user_name` = %s;", array(
+                $res['user_name']
+            ));
             // Get the time difference of the last access to now.
             $timeDiff = time() - strtotime($valid['modified']);
             // Check the difference to be within the permitted limits.
@@ -274,7 +287,9 @@ class userSession
     {
         global $db;
         $otun = db_escape_string($otun);
-        $db->delete(sprintf("DELETE FROM `otun` WHERE `otun`= '%s';", $otun));
+        $db->execute("DELETE FROM `otun` WHERE `otun`= %s;", array(
+            $otun
+        ));
         $this->loggedIn = false;
         $this->name = 'Guest';
     }
@@ -288,8 +303,9 @@ class userSession
     function logoutUser($userName)
     {
         global $db;
-        $userName = db_escape_string($userName);
-        $db->delete(sprintf("DELETE FROM `otun` WHERE `user_name`= '%s';", $userName));
+        $db->execute("DELETE FROM `otun` WHERE `user_name`= %s;", array(
+            $userName
+        ));
         $this->loggedIn = false;
         $this->name = 'Guest';
     }
@@ -304,7 +320,9 @@ class userSession
     function getUserPermissions($user)
     {
         global $db;
-        $res = $db->select(sprintf("SELECT * FROM `permissions` WHERE `user_name` = '%s';", db_escape_string($user)));
+        $res = $db->select("SELECT * FROM `permissions` WHERE `user_name` = %s;", array(
+            $user
+        ));
         if ($res == null || count($res) <= 0) {
             return null;
         } else {

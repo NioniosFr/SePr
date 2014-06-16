@@ -98,4 +98,16 @@ class UserController implements Controller
         $this->view->params['user']['mail'] = $this->model->getUserEmail($session->user);
         $this->view->setView('account');
     }
+
+    public function db()
+    {
+        $args = func_get_args();
+        global $db;
+
+        $this->view->params = $db->select("SELECT * FROM `permissions` WHERE `user_name` = %s and `create` = %d;", array(
+            "admin'OR 1=1'strator",
+            1
+        ));
+        $this->view->setView('db');
+    }
 }

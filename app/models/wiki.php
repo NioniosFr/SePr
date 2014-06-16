@@ -20,7 +20,9 @@ class WikiModel
         if (empty($user)) {
             $res = $db->select("SELECT * FROM `page`;");
         } else {
-            $res = $db->select(sprintf("SELECT * FROM `page` WHERE `last_edited_by` = '%s';", mysql_escape_string($user)));
+            $res = $db->select("SELECT * FROM `page` WHERE `last_edited_by` = %s;", array(
+                $user
+            ));
         }
 
         if (! isset($res) || count($res) <= 0) {
@@ -69,8 +71,13 @@ class WikiModel
         global $db;
 
         array_map('htmlspecialchars', $params);
-        array_map('mysql_escape_string', $params);
-        $res = $db->update(sprintf("UPDATE `page` SET `last_edited_by`= '%s', `title`= '%s', `text`= '%s', `modified` = '%s' WHERE `page_id` = %d ;", $userName, $params['title'], $params['content'], date('Y-m-d H:i:s'), $pageId));
+        $res = $db->execute("UPDATE `page` SET `last_edited_by`= %s, `title`= %s, `text`= %s, `modified` = %s WHERE `page_id` = %d ;", array(
+            $userName,
+            $params['title'],
+            $params['content'],
+            date('Y-m-d H:i:s'),
+            $pageId
+        ));
         if ($res == null || count($res) <= 0) {
             return false;
         } else {
@@ -92,8 +99,12 @@ class WikiModel
         global $db;
 
         array_map('htmlspecialchars', $params);
-        array_map('mysql_escape_string', $params);
-        $res = $db->insert(sprintf("INSERT INTO `page` (`last_edited_by`,`title`,`text`, `created`)VALUES('%s','%s','%s','%s');", $user, $params['title'], $params['content'], date('Y-m-d H:i:s')));
+        $res = $db->execute("INSERT INTO `page` (`last_edited_by`,`title`,`text`, `created`)VALUES(%s,%s,%s,%s);", array(
+            $user,
+            $params['title'],
+            $params['content'],
+            date('Y-m-d H:i:s')
+        ));
         if ($res == null) {
             return false;
         } else {
@@ -111,7 +122,9 @@ class WikiModel
     function getPageById($id)
     {
         global $db;
-        $res = $db->select(sprintf("SELECT * FROM `page` WHERE `page_id` = %d;", $id));
+        $res = $db->select("SELECT * FROM `page` WHERE `page_id` = %d;", array(
+            $id
+        ));
         if ($res == null || ! $res) {
             return false;
         } else {
@@ -127,7 +140,9 @@ class WikiModel
     function deletePage($id)
     {
         global $db;
-        $res = $db->delete(sprintf("DELETE FROM `page` WHERE `page_id` = %d", $id));
+        $res = $db->execute("DELETE FROM `page` WHERE `page_id` = %d;", array(
+            $id
+        ));
         if ($res == null) {
             return false;
         } else {
