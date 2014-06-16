@@ -322,11 +322,10 @@ class userSession
      */
     function resetSession()
     {
-        $this->loggedIn = false;
-        $this->cookie = null;
         session_destroy();
         $this->sessionCookieDelete();
-        session_start();
+        $this->loggedIn = false;
+        $this->cookie = null;
         $this->init();
     }
 }
