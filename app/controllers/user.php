@@ -72,8 +72,8 @@ class UserController implements Controller
         if ($session->user) {
             $session->logoutUser($session->user);
             $session->resetSession();
+            $session->notice = 'You have been logged out.';
         }
-        $session->notice = 'You have been logged out.';
         $this->view->activePage = 'logout';
         $this->view->setView('index', 'default');
     }
