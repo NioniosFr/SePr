@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `sepr.permissions` (
 
 CREATE TABLE IF NOT EXISTS sepr.otun (
 user_name Char(25) NOT NULL,
-otun Int NOT NULL UNIQUE,
+otun Varchar(255) NOT NULL UNIQUE,
 created  datetime not null,
 modified TIMESTAMP DEFAULT now(),
 PRIMARY KEY (user_name),
