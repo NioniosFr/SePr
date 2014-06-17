@@ -18,9 +18,14 @@ class UserModel
     function checkUserCredentials($mail, $pass)
     {
         global $db;
-        $userExists = $db->select(sprintf("SELECT COUNT(*) FROM `user_auth` WHERE `email_address` = '%s' AND `passw` = sha2('%s', 256);", $mail, $pass));
+        $res = $db->select("SELECT `email_address` FROM `user_auth` WHERE `email_address` = %s AND `passw` = sha2(%s, 256);", array(
+            $mail,
+            $pass
+        ));
 
-        if ($userExists == null || count($userExists) === 0) {
+        if (!isset($res['email_address']) || empty($res['email_address'])) {
+            return false;
+        } else if ($res['email_address'] !== $mail) {
             return false;
         } else {
             return true;
@@ -30,7 +35,9 @@ class UserModel
     function getUserName($mail)
     {
         global $db;
-        $res = $db->select(sprintf("SELECT `user_name` FROM `user_auth` WHERE `email_address` = '%s';", $mail));
+        $res = $db->select("SELECT `user_name` FROM `user_auth` WHERE `email_address` = %s;", array(
+            $mail
+        ));
 
         if (isset($res)) {
             return $res['user_name'];
@@ -42,7 +49,9 @@ class UserModel
     function getUserEmail($userName)
     {
         global $db;
-        $res = $db->select(sprintf("SELECT `email_address` FROM `user_auth` WHERE `user_name` = '%s';", $userName));
+        $res = $db->select("SELECT `email_address` FROM `user_auth` WHERE `user_name` = %s;", array(
+            $userName
+        ));
 
         if (isset($res)) {
             return $res['email_address'];
@@ -54,7 +63,9 @@ class UserModel
     function logout($user)
     {
         global $db;
-        $db->select(sprintf("DELETE FROM `otun` WHERE `user_name` = '%s';", mysql_escape_string($user)));
+        $db->execute("DELETE FROM `otun` WHERE `user_name` = %s;", array(
+            $user
+        ));
     }
 
     /**
@@ -63,7 +74,9 @@ class UserModel
     function getPagesEdited($userName)
     {
         global $db;
-        $res = $db->select(sprintf("SELECT * FROM `page` WHERE `last_edited_by` = '%s';", $userName));
+        $res = $db->select("SELECT * FROM `page` WHERE `last_edited_by` = %s;", array(
+            $userName
+        ));
         return $res;
     }
 }
