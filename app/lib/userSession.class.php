@@ -122,7 +122,7 @@ class userSession
     function getCookieVars()
     {
         $this->cookie = array();
-
+        array_map('urldecode', $_COOKIE['user']);
         $args = explode(';', $_COOKIE['user']);
         array_map('htmlspecialchars', $args);
         foreach ($args as $var) {
@@ -191,7 +191,7 @@ class userSession
             // Get the time difference of the last access to now.
             $timeDiff = time() - strtotime($valid['modified']);
             // Check the difference to be within the permitted limits.
-            if ($timeDiff < time() - 1500) {
+            if ($timeDiff < 900) { // 15 minutes.
                 return $res['user_name'];
             } else {
                 Error::setError('Your session has expired.', 'Session timed out', 130);
@@ -253,17 +253,18 @@ class userSession
      */
     function sessionCookieSave()
     {
+        $cookieExpiration = 3600; // 1 hour
         if (! empty($this->cookie)) {
             $cookie = array();
             foreach ($this->cookie as $key => $value) {
                 $cookie[$key] = htmlspecialchars($key . '=' . $value);
             }
-            setcookie('user', implode(';', $cookie), time() + 3600, '/');
+            setcookie('user', implode(';', $cookie), time() + $cookieExpiration, '/');
         } else {
             setcookie('user', implode(';', array(
                 'otun=' . $this->otun,
                 'name=' . $this->name
-            )), time() + 3600, '/');
+            )), time() + $cookieExpiration, '/');
         }
     }
 
