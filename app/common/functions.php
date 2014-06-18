@@ -109,9 +109,11 @@ function dbvsprintf($string, Array $data, &$con = null)
         }
         unset($param);
 
-        // Quote the strings.
-        $quoted = preg_replace('/\%s/', "'%s'", $string);
-        return vsprintf($quoted, $data);
+        // Make sure no stupid stuff are passed by the developers.
+        $dequote = preg_replace("/'\%s'/", "%s", $string); 
+        // Quote all the strings.
+        $quote = preg_replace('/\%s/', "'%s'", $string);
+        return vsprintf($quote, $data);
     }
     return null;
 }
