@@ -30,12 +30,13 @@ foreach ($this->params['pages'] as $page) {
     echo "<td class='active'>{$page['id']}</td>";
     echo "<td class=''>{$page['title']}</td>";
     echo '<td class="">';
-    echo "<a href='{$www['base']}{$page['action']['view']}'/>" . substr($page['content'], 0, 160) . "</a>";
+    echo "<a href='{$www['base']}{$page['action']['view']}'/>" . htmlspecialchars(substr($page['content'], 0, 160)) . "</a>";
     echo (strlen($page['content']) > 160) ? '&nbsp;. . . </td>' : '</td>';
     echo "<td class=''>{$page['lastEditor']}</td>";
     echo "<td class='col-md-2'>";
-    echo "<a role='button' class='pull-right btn btn-warning btn-xs'href='{$www['base']}{$page['action']['edit']}'>Edit</a>";
-    echo "<a role='button' class='pull-right btn btn-danger btn-xs'href='{$www['base']}{$page['action']['delete']}'>Delete</a>";
+    echo "<a role='button' class='btn btn-warning btn-xs'href='{$www['base']}{$page['action']['edit']}'>Edit</a>";
+    echo "&nbsp;";
+    echo "<a role='button' class='btn btn-danger btn-xs'href='{$www['base']}{$page['action']['delete']}'>Delete</a>";
     echo "</td>";
     echo "</tr>";
 }

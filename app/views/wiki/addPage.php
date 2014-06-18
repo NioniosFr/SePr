@@ -22,9 +22,10 @@ if (! defined('CW'))
 		</div>
 		<div class="form-group">
 			<div class="submit">
-				<input class="btn btn-md btn-danger" type="reset" value="Cancel"> <input
-					class="btn btn-md btn-success pull-right" type="submit"
-					value="Save">
+				<input class="btn btn-md btn-warning" type="reset" value="Clear">
+				&nbsp;
+				<a href="<?php echo $www['base'].'wiki'; ?>" class='btn btn-danger btn-sm' role='button'>Cancel</a>
+				<input class="btn btn-md btn-success pull-right" type="submit" value="Save">
 			</div>
 		</div>
 	</form>
