@@ -51,13 +51,12 @@ $www = $config['WWW'];
 
 // Require global classes.
 include_once $path['common'] . 'route.class.php';
-require_once $path['common'] . 'controller.class.php';
+require_once $path['common'] . 'controller.interface.php';
 require_once $path['common'] . 'view.class.php';
 require_once $path['common'] . 'error.class.php';
 require_once $path['lib'] . 'dbHandler.class.php';
 require_once $path['lib'] . 'userSession.class.php';
-// Holds the route class for dispatching requests.
-$route = new Route();
+
 // Holds the view class to render.
 $view = new View();
 // Holds the errors that occur.
