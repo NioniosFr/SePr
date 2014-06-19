@@ -1,4 +1,7 @@
 <?php
+/**
+ * Contains the declaration of the route class.
+ */
 if (! defined('CW'))
     exit('invalid access');
 
@@ -16,14 +19,14 @@ class Route
      *
      * @var stgring
      */
-    var $uri;
+    private $uri;
 
     /**
      * The query string that followed the URI request.
      *
      * @var string
      */
-    var $query;
+    private $query;
 
     /**
      * The actual request.
@@ -31,7 +34,7 @@ class Route
      *
      * @var string
      */
-    var $request;
+    private $request;
 
     /**
      * The requested action.
@@ -40,14 +43,14 @@ class Route
      *
      * @var string
      */
-    var $action;
+    private $action;
 
     /**
      * The controller Object that will be invoked.
      *
      * @var Object
      */
-    var $controller;
+    private $controller;
 
     /**
      * The method to execute.
@@ -57,7 +60,7 @@ class Route
      *
      * @var string
      */
-    var $method;
+    private $method;
 
     /**
      * The arguments that came along with the request.
@@ -66,8 +69,12 @@ class Route
      *
      * @var array
      */
-    var $arguments;
+    private $arguments;
 
+    /**
+     * Route constructor.
+     * Gets the request from the server and initializes the required properties.
+     */
     function __construct()
     {
         $this->uri = urldecode(rawurldecode($_SERVER['REQUEST_URI']));
@@ -77,6 +84,9 @@ class Route
         $this->arguments = array();
     }
 
+    /**
+     * Sanitizes the request to the server.
+     */
     private function sanitizeRequest()
     {
         if (empty($this->request))
@@ -87,30 +97,72 @@ class Route
      * Defaults on the default screen.
      * If a user is logged in he will still be logged in after a wrong route.
      */
-    function determineRequest()
+    public function determineRequest()
     {
-        global $path, $view;
-
         // Get the requested action (the controllers' name).
         $this->getAction();
 
         // No special path was requested.
         if ($this->action === 'default') {
             return;
+        } else {
+            $this->setController();
+        }
+    }
+
+    /**
+     * Initializes the controller and executes the requested method.
+     *
+     * If a controller or method is passed,
+     * it will override the ones that where determined by the request URI.
+     *
+     * @param string $controller
+     *            The controllers class name in lowercase.
+     * @param string $method
+     *            The method name to execute.
+     */
+    private function setController($controller = '', $method = '')
+    {
+        global $path, $view;
+        $usingModel = false;
+
+        $this->action = empty($controller) ? $this->action : $controller;
+        $this->method = empty($method) ? $this->method : $method;
+
+        if (empty($this->action)) {
+            // WTF: default one.
+            return;
+        } else {
+            $controller = $path['controllers'] . $this->action . '.php';
+            @require_once ($controller);
+            $model = $path['models'] . $this->action . '.php';
+            // No model requirement.
+            if (file_exists($model)) {
+                @require_once ($model);
+                $usingModel = true;
+            }
         }
 
-        require_once $path['controllers'] . $this->action . '.php';
-        require_once $path['models'] . $this->action . '.php';
-
-        // Define the propper name of the controller class.
-        $this->controller = ucfirst($this->action) . 'Controller';
-        // Initialize the controllers model.
-        $model = ucfirst($this->action) . 'Model';
-        $model = new $model();
+        if ($usingModel) {
+            // Initialize the controllers model.
+            $model = ucfirst($this->action) . 'Model';
+            $model = new $model();
+        } else {
+            $model = null;
+        }
+        // Controller view folder, is the its name in lowercase.
         $view->folder = $this->action;
+        // Define the actual/propper class name for the controller.
+        $controllerClass = ucfirst($this->action) . 'Controller';
         // Initialize the controller.
-        $this->controller = new $this->controller($model, $view);
+        $this->controller = new $controllerClass($model, $view);
+    }
 
+    /**
+     * Executes the determined controller.
+     */
+    public function executeController()
+    {
         if ($this->method !== null) {
             try {
                 if (method_exists($this->controller, $this->method)) {
@@ -122,10 +174,14 @@ class Route
             } catch (Exception $e) {
                 Error::setError('', 'Undefined Error', 150);
             }
-        } else {
-            // Execute the controllers index function.
-            $this->controller->index();
-        }
+        } else
+            if (! empty($this->controller)) {
+                // Execute the controllers index function.
+                $this->controller->index();
+            } else {
+                // Default actions here.
+                return;
+            }
     }
 
     /**
@@ -134,7 +190,7 @@ class Route
      * Checks for sever errors, unauthorized attempts, etc
      * and redirects to the error view to the default if any.
      */
-    function finalCheck()
+    public function finalCheck()
     {
         global $session, $view;
         if (Error::severeErrorOccured()) {
@@ -189,7 +245,9 @@ class Route
      * Determine the method that was requested from the user.
      * The default method for a controller (action)is "index" and is not defined in the URI path.
      *
-     * @return String | NULL : The method name if any. NULL otherwise.
+     * @param array $args
+     *            An indexed array that contains the URI query arguments.
+     * @return string | NULL : The method name if any. NULL otherwise.
      */
     public function getMethod($args)
     {
@@ -215,5 +273,20 @@ class Route
             unset($args['path']);
             return $this->arguments = $args;
         }
+    }
+}
+
+/**
+ * Gets the route object.
+ *
+ * @return Object Route
+ */
+function get_route()
+{
+    if (isset($route) && ! empty($route)) {
+        return $route;
+        var_dump('route was setted');
+    } else {
+        return new Route();
     }
 }
