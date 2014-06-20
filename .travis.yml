@@ -18,7 +18,7 @@ php:
 #    - php: "5.2"
 
 before_script:
-    - $CONFIG=$(basename $(pwd))/tests/phpunit.xml.dist
+    - export CONFIG=$(basename $(pwd))/tests/phpunit.xml.dist
 
 script:
     - phpunit -c $CONFIG
