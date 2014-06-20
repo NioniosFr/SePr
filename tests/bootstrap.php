@@ -13,13 +13,15 @@ $config = parse_ini_file(ETC . 'config.ini.php', true);
 require_once BASE . $config['PATH']['common'] . DS . 'functions.php';
 
 global $path, $www;
-$path['PATH'] = fix_config_paths($config['PATH']);
+$path = fix_config_paths($config['PATH']);
 $config['WWW']['base'] = 'wwwBase';
 $config['WWW']['web'] = 'wwwWeb';
 $config['WWW']['rsrcs'] = 'resources';
 $config['WWW']['scripts'] = 'scripts';
 $config['WWW']['styles'] = 'styles';
+$www = $config['WWW'];
 
+// Mock out the error class.
 class Error
 {
 
