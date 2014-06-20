@@ -1,0 +1,24 @@
+# Travis CI Configuration File
+
+# Only test the master branch.
+branches:
+  only:
+    - "master"
+
+# Tell Travis CI we're using PHP.
+language: php
+
+# PHP version used in first build configuration.
+php:
+    - "5.3"
+
+#matrix:
+#  include:
+#    - php: "5.5"
+#    - php: "5.2"
+
+before_script:
+    - $CONFIG=$(basename $(pwd))/tests/phpunit.xml.dist
+
+script:
+    - phpunit -c $CONFIG
