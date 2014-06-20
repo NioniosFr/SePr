@@ -85,6 +85,20 @@ class Route
     }
 
     /**
+     * Get a propertys value.
+     *
+     * @param string $param
+     *            The properties name.
+     * @return mixed | NULL
+     *         The propertys value if exist.
+     *         Null otherwise.
+     */
+    function __get($param)
+    {
+        return isset($this->param) ? $this->param : null;
+    }
+
+    /**
      * Sanitizes the request to the server.
      */
     private function sanitizeRequest()
@@ -211,9 +225,9 @@ class Route
         $this->action = 'default';
 
         // Get the path request (defined from .htaccess).
-        if (! array_key_exists('path', $this->request)) {
+        if (! is_array($this->request) || ! array_key_exists('path', $this->request)) {
             // Default controller and view.
-            return;
+            return null;
         }
 
         $uri = urldecode(urldecode(rawurldecode($this->request['path'])));
@@ -228,7 +242,7 @@ class Route
             unset($uriParts[0]);
             // If no more arguments where given, return.
             if (empty($uriParts[1])) {
-                return;
+                return null;
             } else {
                 // Set the rest of the uri parts to the arguments array.
                 // TODO: Sanitize the URI parts.
@@ -252,12 +266,15 @@ class Route
     public function getMethod($args)
     {
         // Once the action was determined, the rest of the request
-        // was stored as arguments.
-        if (empty($args) || empty($args[0])) {
+        // was stored as arguments. The first one should be a methods name.
+        if (count($args) < 0 || empty($args[0])) {
             return null;
-        }
-
-        return $args[0];
+        } else  // The minimum characters length for a controllers method.
+            if (is_string($args[0]) && strlen(trim($args[0], '0-9')) > 3) {
+                return $args[0];
+            } else {
+                return null;
+            }
     }
 
     /**
@@ -266,6 +283,7 @@ class Route
      */
     public function getArguments()
     {
+        // As security, the default controler will not accept arguments.
         if (! isset($this->request['path'])) {
             return $this->arguments = null;
         } else {
@@ -274,7 +292,13 @@ class Route
             if (count($args) <= 0) {
                 return null;
             } else {
-                return $this->arguments = $args;
+
+                $args = array_map('rawurldecode', $args);
+                $args = array_map('utf8_decode', $args);
+                $args = array_map('html_entity_decode', $args);
+
+                $this->arguments = $args;
+                return $this->arguments;
             }
         }
     }
