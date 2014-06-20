@@ -271,7 +271,11 @@ class Route
         } else {
             $args = $this->request;
             unset($args['path']);
-            return $this->arguments = $args;
+            if (count($args) <= 0) {
+                return null;
+            } else {
+                return $this->arguments = $args;
+            }
         }
     }
 }
