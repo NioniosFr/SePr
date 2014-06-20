@@ -207,8 +207,9 @@ class Test_RouteClass extends PHPUnit_Framework_TestCase
         $_REQUEST = array();
         $route = new Route();
 
-        $actual = $route->getAction();
-        $this->assertEquals(null, $actual);
+        $route->getAction();
+        $actual = $route->action;
+        $this->assertEquals('default', $actual);
     }
 
     function test_getActionFromRequestWithoutPath()
@@ -222,7 +223,7 @@ class Test_RouteClass extends PHPUnit_Framework_TestCase
 
         $route->getAction();
         $actual = $route->action;
-        $this->assertEquals(null, $actual);
+        $this->assertEquals('default', $actual);
     }
 
     function test_getActionFromRequestWithMalformedPath()
@@ -237,7 +238,7 @@ class Test_RouteClass extends PHPUnit_Framework_TestCase
 
         $route->getAction();
         $actual = $route->action;
-        $this->assertEquals(null, $actual);
+        $this->assertEquals('default', $actual);
     }
 
     function test_getActionForInvalidController()
@@ -249,33 +250,44 @@ class Test_RouteClass extends PHPUnit_Framework_TestCase
 
         $route->getAction();
         $actual = $route->action;
-        $this->assertEquals(null, $actual);
+        $this->assertEquals('default', $actual);
 
     }
 
     function test_getActionForValidController()
     {
         $_REQUEST = array(
-            'path'=> 'user'
+            'path'=> 'user/blablala/%3C%20%3E'
         );
         $route = new Route();
 
         $route->getAction();
         $actual = $route->action;
-        $this->assertEquals(null, $actual);
+        $this->assertEquals('user', $actual);
+    }
 
+    function test_getActionForValidMisplacedController()
+    {
+        $_REQUEST = array(
+            'path'=> 'sdad%20asda/user/blablala/%3C%%3E'
+        );
+        $route = new Route();
+
+        $route->getAction();
+        $actual = $route->action;
+        $this->assertEquals('default', $actual);
     }
 
     function test_getActionForMistypedButValidController()
     {
         $_REQUEST = array(
-            'path'=> 'uSer'
+            'path'=> 'uSer/blablala'
         );
         $route = new Route();
 
         $route->getAction();
         $actual = $route->action;
-        $this->assertEquals(null, $actual);
+        $this->assertEquals('default', $actual);
 
     }
 }
