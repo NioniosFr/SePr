@@ -30,8 +30,19 @@ class Test_RouteClass extends PHPUnit_Framework_TestCase
     function tearDown()
     {}
 
-    function test_getArgumentsWithNullRequest()
+    function test_getArgumentsFromNullRequest()
     {
+        $route = new Route();
+        $actual = $route->getArguments();
+        $this->assertEquals(null, $actual);
+        $actual = $route->getArguments();
+        $this->assertEquals(null, $actual);
+    }
+    function test_getArgumentsWithoutPathInput()
+    {
+        $_REQUEST = array(
+            'some' => 'value'
+        );
         $route = new Route();
         $actual = $route->getArguments();
         $this->assertEquals(null, $actual);
@@ -51,15 +62,220 @@ class Test_RouteClass extends PHPUnit_Framework_TestCase
     {
         $_REQUEST = array(
             'path' => '',
-            'key' => 'value'
+            'key1' => 'value1',
+            'key2' => 2
         );
         $expected = array(
-            'key' => 'value'
+            'key1' => 'value1',
+            'key2' => '2'
         );
 
         $route = new Route();
         $actual = $route->getArguments();
         $this->assertEquals($expected, $actual);
     }
-}
 
+    function test_getArgumentsWithSpecialChars()
+    {
+        $_REQUEST = array(
+            'path' => '',
+            'html' => '&amp;%3C%3B%21%23',
+            'spaces' => '%20hello%20world'
+        );
+        $expected = array(
+            'html' => '&<;!#',
+            'spaces' => ' hello world'
+        );
+
+        $route = new Route();
+        $actual = $route->getArguments();
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * Skip this: Not yet implemented.
+     */
+    function test_getArgumentsFromUTF8()
+    {
+        $this->markTestSkipped('UTF8 support is not yet implemented.');
+
+        $_REQUEST = array(
+            'path' => '',
+            'utf8' => '%FC%D8%E9',
+            'GR' => 'αβγδπλρωΨΩΛΔΘ'
+        );
+        $expected = array(
+            'utf8' => 'üØé',
+            'GR' => 'αβγδπλρωΨΩΛΔΘ'
+        );
+
+        $route = new Route();
+        $actual = $route->getArguments();
+        $this->assertEquals($expected, $actual);
+    }
+
+    function test_getMethodWithEmptyArray()
+    {
+        $route = new Route();
+
+        $actual = $route->getMethod(array());
+        $this->assertEquals(null, $actual);
+
+        $actual = $route->getMethod(array(
+            ''
+        ));
+        $this->assertEquals(null, $actual);
+
+        $actual = $route->getMethod(array(
+            ' '
+        ));
+        $actual = $route->getMethod(array(
+            null
+        ));
+        $this->assertEquals(null, $actual);
+    }
+
+    function test_getMethodWithArrayKeys()
+    {
+        $route = new Route();
+
+        $actual = $route->getMethod(array(
+            'first' => 'somevalue',
+            'second' => 132165
+        ));
+        $this->assertEquals(null, $actual);
+
+        $actual = $route->getMethod(array(
+            2 => 'somevalue',
+            'second' => 132165
+        ));
+        $this->assertEquals(null, $actual);
+
+        $actual = $route->getMethod(array(
+            0 => 'expected',
+            'second' => 132165
+        ));
+        $this->assertEquals('expected', $actual);
+
+        $actual = $route->getMethod(array(
+            'first' => 012345,
+            0 => 'expected'
+        ));
+        $this->assertEquals('expected', $actual);
+
+        $actual = $route->getMethod(array(
+            'first' => 'somevalue',
+            0 => 012345
+        ));
+        $this->assertEquals(null, $actual);
+    }
+
+    function test_getMethodWithArrayIndexes()
+    {
+        $route = new Route();
+
+        $actual = $route->getMethod(array(
+            'expected',
+            12345
+        ));
+        $this->assertEquals('expected', $actual);
+        // First argument has to be a string.
+        $actual = $route->getMethod(array(
+            12345,
+            'somevalue'
+        ));
+        $this->assertEquals(null, $actual);
+
+        $actual = $route->getMethod(array(
+            null,
+            'somevalue'
+        ));
+        $this->assertEquals(null, $actual);
+
+    }
+
+    function test_getActionFromNullRequest()
+    {
+        $route = new Route();
+
+        $actual = $route->getAction();
+        $this->assertEquals(null, $actual);
+    }
+
+    function test_getActionFromEmptyRequest()
+    {
+        $_REQUEST = array();
+        $route = new Route();
+
+        $actual = $route->getAction();
+        $this->assertEquals(null, $actual);
+    }
+
+    function test_getActionFromRequestWithoutPath()
+    {
+        $_REQUEST = array(
+            'other',
+            'variables',
+            'and' => 'pairs'
+        );
+        $route = new Route();
+
+        $route->getAction();
+        $actual = $route->action;
+        $this->assertEquals(null, $actual);
+    }
+
+    function test_getActionFromRequestWithMalformedPath()
+    {
+        //global $path;
+        $_REQUEST = array(
+            'path'=> '1358%0865dafcaes65f1v%204edfv',
+            'empty' =>'%20',
+            'uninitialized' => null
+        );
+        $route = new Route();
+
+        $route->getAction();
+        $actual = $route->action;
+        $this->assertEquals(null, $actual);
+    }
+
+    function test_getActionForInvalidController()
+    {
+        $_REQUEST = array(
+            'path'=> '../etc/config.ini.php'
+        );
+        $route = new Route();
+
+        $route->getAction();
+        $actual = $route->action;
+        $this->assertEquals(null, $actual);
+
+    }
+
+    function test_getActionForValidController()
+    {
+        $_REQUEST = array(
+            'path'=> 'user'
+        );
+        $route = new Route();
+
+        $route->getAction();
+        $actual = $route->action;
+        $this->assertEquals(null, $actual);
+
+    }
+
+    function test_getActionForMistypedButValidController()
+    {
+        $_REQUEST = array(
+            'path'=> 'uSer'
+        );
+        $route = new Route();
+
+        $route->getAction();
+        $actual = $route->action;
+        $this->assertEquals(null, $actual);
+
+    }
+}
