@@ -95,7 +95,7 @@ class Route
      */
     function __get($param)
     {
-        return isset($this->param) ? $this->param : null;
+        return isset($this->$param) ? $this->$param : null;
     }
 
     /**
@@ -227,9 +227,8 @@ class Route
         // Get the path request (defined from .htaccess).
         if (! is_array($this->request) || ! array_key_exists('path', $this->request)) {
             // Default controller and view.
-            return null;
+            return;
         }
-
         $uri = urldecode(urldecode(rawurldecode($this->request['path'])));
         $uri = htmlspecialchars(html_entity_decode($uri));
         $uriParts = explode('/', $uri);
@@ -242,7 +241,7 @@ class Route
             unset($uriParts[0]);
             // If no more arguments where given, return.
             if (empty($uriParts[1])) {
-                return null;
+                return;
             } else {
                 // Set the rest of the uri parts to the arguments array.
                 // TODO: Sanitize the URI parts.
