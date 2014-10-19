@@ -1,15 +1,19 @@
 
 <div style="clear: both;">
-	<br />
-	<br />
+	<br /> <br />
 </div>
 <div id="footer">
-	<link rel="stylesheet"
-		href="<?php echo $www['styles'].'bootstrap.css'; ?>" />
-	<script
-		src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<script type="text/javascript"
-		src="<?php echo $www['scripts'].'bootstrap.js';?>"></script>
+<?php
+foreach ( $this->styles as $style => $href ) {
+	echo "<link rel='stylesheet' href='$href' />\n";
+}
+foreach ( $this->scripts as $script => $src ) {
+	echo "<script type='text/javascript' src='$src'></script>\n";
+}
+foreach ($this->inline_scripts as $script => $code){
+	echo "<script type='text/javascript'>$code</script>\n";
+}
+?>
 </div>
 </div>
 </body>

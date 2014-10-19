@@ -43,6 +43,22 @@ class View
     var $activePage;
 
     /**
+     * Styles to include in the view
+     *
+     * @var array
+     */
+    var $styles = array();
+
+    /**
+     *Scripts to include in the view.
+     *
+     * @var array
+     */
+    var $scripts = array();
+
+    var $inline_scripts = array();
+
+    /**
      * A default view to render if non-existent views where setted.
      * Should be a file path to a view file that uses no parameters.
      *
@@ -52,13 +68,18 @@ class View
 
     function __construct()
     {
-        global $path;
+        global $path, $www;
         $this->view = 'index';
         $this->folder = 'default';
         $this->file = $path['views'] . $this->folder . DS . $this->view . '.php';
         $this->defaultView = $this->file;
         $this->params = array();
         $this->activePage = 'index';
+
+		// Include the default scripts and styles.
+        $this->styles['bootstrap'] = "${www['styles']}bootstrap.css";
+        $this->scripts['jquery-1.11.0'] = '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js';
+        $this->scripts['bootstrap'] = "${www['scripts']}bootstrap.js";
     }
 
     function __get($param)

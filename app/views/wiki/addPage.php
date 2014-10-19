@@ -1,6 +1,8 @@
 <?php
 if (! defined('CW'))
     exit('invalid access');
+$this->scripts['tinymce-4.1.6'] = '//tinymce.cachefly.net/4.1/tinymce.min.js';
+$this->inline_scripts['tinymce-init'] = "tinymce.init({selector:'textarea'});";
 ?>
 
 <h2>Add New Page</h2>
