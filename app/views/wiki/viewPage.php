@@ -5,27 +5,12 @@ if (! defined('CW'))
 ?>
 
 <h2>
-<?php echo htmlspecialchars($this->params['page']['title']);?>
+<?php echo $this->params['page']['title'];?>
 </h2>
 <div>
 <?php
-// Define lines.
-// Characters per line.
-$line = 80;
-// Lines per paragraph
-$linesPerPar = 8;
-// Break the lines
-$text = htmlspecialchars($this->params['page']['content']);
-//$text = wordwrap($text, $line, '<br />');
-
-$text_to_echo = strlen($text);
-while ($text_to_echo > 0) {
-    echo '<p>';
-    // Echo as many characters as the lines per paragraph.
-    echo $paragraph = htmlspecialchars(substr($text, 0, $line * $linesPerPar));
-    echo '</p>';
-    $text_to_echo -= $line * $linesPerPar;
-}
+$text = $this->params['page']['content'];
+echo $text;
 ?>
 </div>
 <div>

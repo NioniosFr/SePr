@@ -77,8 +77,8 @@ class WikiController implements Controller
         if (count($args[0]) != 2 || empty($args[0]['title']) || empty($args[0]['content'])) {
             Error::setError('You need to specify both title and content.', 'Missing arguments');
         } else {
-            $title = htmlspecialchars($args[0]['title']);
-            $content = htmlspecialchars($args[0]['content']);
+            $title = $args[0]['title'];
+            $content = $args[0]['content'];
             // Try to add the new page.
             if ($this->model->addPage($session->user, array(
                 'title' => $title,

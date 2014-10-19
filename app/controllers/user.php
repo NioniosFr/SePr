@@ -54,7 +54,9 @@ class UserController implements Controller
                 $session->createOtun($session->user);
                 $session->sessionCookieSave();
                 $session->success = "You are now logged In.";
-                $this->myAccount();
+                //$this->myAccount();
+                echo header("Location: myAccount");
+                exit();
             } else {
                 $error->setError('The given credentials do not much.', 'Wrong Credentials');
                 $this->view->setView('index');
@@ -68,7 +70,7 @@ class UserController implements Controller
      */
     public function logout()
     {
-        global $session;
+        global $session, $www;
         if ($session->user) {
             $session->logoutUser($session->user);
             $session->resetSession();
@@ -76,6 +78,8 @@ class UserController implements Controller
         }
         $this->view->activePage = 'logout';
         $this->view->setView('index', 'default');
+        //echo header("Location: ${www['base']}");
+        //exit();
     }
 
     /**

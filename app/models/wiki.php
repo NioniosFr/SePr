@@ -2,6 +2,9 @@
 if (! defined('CW'))
     exit('invalid access');
 
+global $path;
+require_once $path['lib'].'htmlpurifier-4.6.0-standalone/HTMLPurifier.standalone.php';
+
 class WikiModel
 {
 
@@ -47,8 +50,8 @@ class WikiModel
     {
         $page_array = array();
         $page_array['id'] = $page['page_id'];
-        $page_array['title'] = htmlspecialchars($page['title']);
-        $page_array['content'] = htmlspecialchars($page['text']);
+        $page_array['title'] = $page['title']; //htmlspecialchars()
+        $page_array['content'] = $page['text']; //htmlspecialchars()
         $page_array['created'] = $page['created'];
         $page_array['modified'] = $page['modified'];
         $page_array['lastEditor'] = $page['last_edited_by'];
@@ -70,11 +73,15 @@ class WikiModel
     {
         global $db;
 
-        array_map('htmlspecialchars', $params);
+        $config = HTMLPurifier_Config::createDefault();
+        $purifier = new HTMLPurifier($config);
+        $sanitized['title'] = $purifier->purify($params['title']);
+        $sanitized['content'] = $purifier->purify($params['content']);
+
         $res = $db->execute("UPDATE `page` SET `last_edited_by`= %s, `title`= %s, `text`= %s, `modified` = %s WHERE `page_id` = %d ;", array(
             $userName,
-            $params['title'],
-            $params['content'],
+            $sanitized['title'],
+            $sanitized['content'],
             date('Y-m-d H:i:s'),
             $pageId
         ));
@@ -98,11 +105,15 @@ class WikiModel
     {
         global $db;
 
-        array_map('htmlspecialchars', $params);
+        $config = HTMLPurifier_Config::createDefault();
+        $purifier = new HTMLPurifier($config);
+        $sanitized['title'] = $purifier->purify($params['title']);
+        $sanitized['content'] = $purifier->purify($params['content']);
+
         $res = $db->execute("INSERT INTO `page` (`last_edited_by`,`title`,`text`, `created`)VALUES(%s,%s,%s,%s);", array(
             $user,
-            $params['title'],
-            $params['content'],
+            $sanitized['title'],
+            $sanitized['content'],
             date('Y-m-d H:i:s')
         ));
         if ($res == null) {
